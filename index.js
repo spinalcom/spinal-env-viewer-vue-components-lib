@@ -21,5 +21,5 @@
  *
  */
 
-import Components from "./components"
+import Components from "./components/index"
 export default Components;

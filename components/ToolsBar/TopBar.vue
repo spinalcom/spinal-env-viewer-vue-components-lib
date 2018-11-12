@@ -1,6 +1,5 @@
 <template>
     <tools-bar
-            class="TopBar"
             :buttons="buttons"
             :classes="classes"
             :option="graph"
@@ -35,8 +34,8 @@
 </script>
 
 <style scoped>
-    .topBar {
+    .top-bar {
         border: 2px solid;
-        width: 50px;
+        min-width:
     }
 </style>

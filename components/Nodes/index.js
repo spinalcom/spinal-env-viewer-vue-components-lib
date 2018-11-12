@@ -19,9 +19,9 @@
  * <http://resources.spinalcom.com/licenses.pdf>.
  */
 
-import NodeHeader from  "./NodeHeader.vue";
+import NodeHeader from "./NodeHeader.vue";
 import NodeItem from "./NodeItem.vue";
-import NodeList from"./NodesList.vue";
+import NodeList from "./NodesList.vue";
 
 export default {
     NodeHeader,

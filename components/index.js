@@ -21,10 +21,10 @@
  *
  */
 
-import Buttons from "./Button";
+import Buttons from "./Button/index";
 import ColorMarker from "./ColorMarker/ColorMaker.vue";
-import Nodes from "./Nodes";
-import ToolsBar from "./ToolsBar";
+import Nodes from "./Nodes/index";
+import ToolsBar from "./ToolsBar/index";
 
 
 export default {
