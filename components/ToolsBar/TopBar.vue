@@ -1,5 +1,5 @@
 <template>
-    <tools-bar
+    <tools-bar class="top-bar"
             :buttons="buttons"
             :classes="classes"
             :option="graph"
@@ -36,6 +36,7 @@
 <style scoped>
     .top-bar {
         border: 2px solid;
-        min-width:
+        min-width: 100%;
+        min-height: 30px;
     }
 </style>
