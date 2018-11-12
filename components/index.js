@@ -22,7 +22,7 @@
  */
 
 import Buttons from "./Button";
-import ColorMarker from "./ColorMarker";
+import ColorMarker from "./ColorMarker/ColorMaker.vue";
 import Nodes from "./Nodes";
 import ToolsBar from "./ToolsBar";
 

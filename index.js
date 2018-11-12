@@ -22,4 +22,4 @@
  */
 
 import Components from "./components"
-export default {Components};
+export default Components;

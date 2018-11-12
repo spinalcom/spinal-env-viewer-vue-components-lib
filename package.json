@@ -16,5 +16,13 @@
   "bugs": {
     "url": "https://github.com/spinalcom/spinal-env-viewer-vue-components-lib/issues"
   },
-  "homepage": "https://github.com/spinalcom/spinal-env-viewer-vue-components-lib#readme"
+  "homepage": "https://github.com/spinalcom/spinal-env-viewer-vue-components-lib#readme",
+  "dependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.3",
+    "babel-preset-env": "^1.7.0"
+  },
+  "browserify":{
+    "transform": ["vueify", "babelify"]
+  }
 }
