@@ -1,14 +1,12 @@
 <template>
-    <div>
-        <div v-for="(b, index) in buttons" v-bind:key="index">
-            <a :style="classes.a">
+    <div class="tool-bar">
+            <a  v-for="(b, index) in buttons" v-bind:key="index">
                 <base-badge-icon-button
                         :button="b.button"
                         :badge_content="b.badge_content"
-                        @click="b.button.action(option)"
-                />
+                        @click="b.button.action(option)"/>
             </a>
-        </div>
+
     </div>
 </template>
 
@@ -42,5 +40,8 @@
 </script>
 
 <style scoped>
-
+    .tool-bar{
+        min-width: 30px;
+        min-height: 30px;
+    }
 </style>
