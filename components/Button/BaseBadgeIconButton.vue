@@ -10,7 +10,11 @@
         </md-badge>
 
         <!-- Normal button -->
-        <base-icon-button :button-info="button" @click="$emit('click')" v-else/>
+        <base-icon-button
+                :button-info="button"
+                @click="$emit('click')"
+                v-else
+        />
     </div>
 </template>
 

@@ -21,17 +21,6 @@
                 type: Array,
                 required: true,
             },
-            classes: {
-                type: Object,
-                default: function () {
-                    return {
-                        a: {
-                            float: "left",
-                            size:   "500px"
-                        }
-                    }
-                }
-            },
             option: {
                 type:Object
             }
