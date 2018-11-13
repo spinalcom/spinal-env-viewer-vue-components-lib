@@ -1,7 +1,6 @@
 <template>
     <tools-bar class="top-bar"
             :buttons="buttons"
-            :classes="classes"
             :option="graph"
     />
 </template>
@@ -19,15 +18,6 @@
             },
             graph:{
                 type: Object
-            }
-        },
-        data: function () {
-            return {
-                classes: {
-                    a: {
-                        size: "500px"
-                    }
-                }
             }
         }
     }

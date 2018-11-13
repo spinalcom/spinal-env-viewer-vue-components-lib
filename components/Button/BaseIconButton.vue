@@ -1,31 +1,36 @@
 <template>
     <div>
-        <md-button class="md-icon-button md-primary" @click="$emit('click')" v-if="buttonInfo.icon_type === 'in' ">
-            <md-tooltip md-delay="300" :md-direction="toolTipDirection" v-if="buttonInfo.toolTip.length > 0">
-                {{buttonInfo.toolTip}}
-            </md-tooltip>
-            <md-icon>
-                {{buttonInfo.icon}}
-            </md-icon>
-        </md-button>
-        <md-button class="md-icon-button md-primary"  @click="$emit('click')" v-else-if="buttonInfo.icon_type === 'class' ">
-            <md-tooltip md-delay="300" :md-direction="toolTipDirection" v-if="buttonInfo.toolTip.length > 0">
-                {{buttonInfo.toolTip}}
-            </md-tooltip>
-            <md-icon :class="buttonInfo.icon"/>
-        </md-button>
-        <md-button class="md-icon-button md-primary"  @click="$emit('click')" v-else>
-            <md-tooltip md-delay="300" :md-direction="toolTipDirection" v-if="buttonInfo.toolTip.length > 0">
-                {{buttonInfo.toolTip}}
-            </md-tooltip>
-            <md-icon :md-src="buttonInfo.icon"/>
-        </md-button>
+        <base-icon-button-in
+                v-if="buttonInfo.icon_type === 'in'"
+                :icon="buttonInfo.icon"
+                :tool-tip="buttonInfo.toolTip"
+                tool-tip-delay="300"
+                :tool-tip-direction="toolTipDirection"
+        />
+        <base-icon-button-class
+                v-else-if="buttonInfo.icon_type === 'class'"
+                :icon="buttonInfo.icon"
+                :tool-tip="buttonInfo.toolTip"
+                tool-tip-delay="300"
+                :tool-tip-direction="toolTipDirection"
+        />
+        <base-icon-button-src
+                v-else
+                :icon="buttonInfo.icon"
+                :tool-tip="buttonInfo.toolTip"
+                tool-tip-delay="300"
+                :tool-tip-direction="toolTipDirection"
+        />
     </div>
 </template>
 
 <script>
+    import BaseIconButtonClass from "./BaseIconButtonClass.vue";
+    import BaseIconButtonIn from "./BaseIconButtonIn.vue";
+    import BaseIconButtonSrc from "./BaseIconButtonSrc.vue";
     export default {
         name: "BaseIconButton",
+        components: {BaseIconButtonSrc, BaseIconButtonIn, BaseIconButtonClass},
         props: {
             buttonInfo: {
                 type: Object,

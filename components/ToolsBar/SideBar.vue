@@ -1,7 +1,6 @@
 <template>
     <tools-bar class="sideBar"
                :buttons="buttons"
-               :classes="classes"
                :option="option"
     />
 </template>
@@ -19,16 +18,6 @@
             option: {
                 type: Object,
                 required: true
-            }
-        },
-        data: function () {
-            return {
-                classes: {
-                    a: {
-                        float: "left",
-                        size:   "500px"
-                    }
-                }
             }
         }
     }
