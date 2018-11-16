@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div @click="$emit('click')">
         <base-icon-button-in
                 v-if="buttonInfo.icon_type === 'in'"
                 :icon="buttonInfo.icon"

@@ -1,13 +1,13 @@
 <template>
         <md-button
-                class="md-icon-button md-raised"
+                class="md-icon-button"
                 @click="$emit('click')">
             <md-tooltip :md-delay="toolTipDelay"
                         :md-direction="toolTipDirection"
                         v-if="toolTip.length > 0">
                 {{toolTip}}
             </md-tooltip>
-            <md-icon>{{icon}}</md-icon>
+            <md-icon :style="{width: '20px'}">{{icon}}</md-icon>
         </md-button>
 </template>
 
@@ -48,8 +48,5 @@
 </script>
 
 <style scoped>
-    .md-ripple {
-        padding-left: 0;
-        padding-right: 0;
-    }
+
 </style>
