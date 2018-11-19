@@ -117,11 +117,16 @@
 
 <style scoped>
 
+    ul{
+        padding-inline-start: 0px;
+    }
+    li {
+        padding-inline-start: 18px;
+    }
 
     .node-item {
         width: 100%;
         list-style-type: none;
-        padding-inline-start: 0px;
     }
 
 

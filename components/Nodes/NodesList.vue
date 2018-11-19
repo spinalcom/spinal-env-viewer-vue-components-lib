@@ -1,6 +1,6 @@
 <template>
     <div class="nodes-list">
-        <node-item
+        <node-item class="item"
                    v-for="(id, index) in contextIds"
                    :key="index"
                    :nodes="nodes"

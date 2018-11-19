@@ -108,18 +108,18 @@
     .node-header:hover {
         background-color: rgba(0, 0, 0, 0.3);
         cursor: pointer;
-        padding: 9px 6px 6px 13px;
     }
 
     .node-list-icon {
         position: absolute;
         left: 0;
+        top: 7px;
         width: 21px;
     }
 
     .node-name {
         position: absolute;
-        left: 21px;
+        left: 26px;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
