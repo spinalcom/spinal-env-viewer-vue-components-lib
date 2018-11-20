@@ -7,7 +7,7 @@
                    :node-id="id"
                    @node-selected="$emit('node-selected', $event)"
                    @hide-bim-object="$emit('hide-bim-object', $event)"
-                   @pull-node="$emit('pull-node',$event)"
+                   @pull-children="$emit('pull-children',$event)"
         />
     </div>
 
