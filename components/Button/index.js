@@ -20,12 +20,12 @@
  *
  */
 
-import BaseBadgeIconButton from "./BaseBadgeIconButton.vue"
-import BaseIconButton from "./BaseIconButton.vue"
+import SpinalBadgeIconButton from "./SpinalBadgeIconButton.vue"
+import SpinalIconButton from "./SpinalIconButton.vue"
 import DropUpDownButton from "./DropUpDownButton.vue"
 
 export default {
-    BaseIconButton,
     DropUpDownButton,
-    BaseBadgeIconButton
+    SpinalBadgeIconButton,
+    SpinalIconButton
 }

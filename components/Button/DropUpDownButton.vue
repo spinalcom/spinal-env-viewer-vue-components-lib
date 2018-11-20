@@ -1,5 +1,5 @@
 <template>
-    <div @click="$emit('click')">
+    <div @click="onClick">
         <i class="material-icons">
             {{icon}}
         </i>
@@ -7,30 +7,23 @@
 </template>
 
 <script>
-    import BaseIconButton from "./BaseIconButton.vue";
 
     export default {
         name: "DropUpDownButton",
-        components: {BaseIconButton},
-        props: {
-            opened: {
-                type: Boolean,
-                default: function () {
-                    return false;
-                }
-            }
-        },
-        watch: {
-            opened: {
-                handler: function (value) {
-                    this.icon = value ? "arrow_drop_up" : "arrow_drop_down";
-                },
-                immediate: true
+        computed: {
+            icon: function () {
+                return this.opened ? "arrow_drop_up" : "arrow_drop_down";
             }
         },
         data: function () {
             return {
-                icon: "arrow_drop_down"
+                opened: false
+            }
+        },
+        methods: {
+            onClick: function () {
+                this.opened = !this.opened;
+                this.$emit('click', this.opened);
             }
         }
     }
