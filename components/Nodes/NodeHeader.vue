@@ -4,7 +4,6 @@
     >
         <drop-up-down-button
                 class="node-list-icon"
-                :opened="opened"
                 @click="$emit('toggle-display-child')"
                 :style="{visibility: isVisible}"
         />
@@ -25,20 +24,20 @@
 
 <script>
     import DropUpDownButton from "../Button/DropUpDownButton.vue";
-    import BaseIconButton from "../Button/BaseIconButton.vue";
     import ColorMaker from "../ColorMarker/ColorMaker.vue";
 
     export default {
         name: "NodeHeader",
-        components: {ColorMaker, BaseIconButton, DropUpDownButton},
+        components: {ColorMaker, DropUpDownButton},
         props: {
+
             hasChild: {
                 type: Boolean,
                 required: true
             },
 
-            info: {
-                type: Object,
+            name: {
+                type: String,
                 required: true
             },
 
@@ -47,11 +46,21 @@
                 required: true
             },
 
-            opened: {
-                type: Boolean,
-                required: true
+            color: {
+                type: String,
+                default: function() {
+                    return ""
+                }
+            }
+
+        },
+
+        computed: {
+            isVisible: function() {
+                return this.hasChild ? "" : "hidden";
             }
         },
+
         watch: {
             hasChild: {
                 handler: function (oldValue, newValue) {
@@ -68,31 +77,9 @@
                     }
                 },
                 immediate: true
-            },
-            info: {
-                handler: function (oldValue, newValue) {
-                    if (typeof newValue !== "undefined") {
-                        if (newValue.hasOwnProperty("name"))
-                            this.name = newValue.name.get();
-                        if (newValue.hasOwnProperty("color"))
-                            this.color = newValue.color.get();
-                    }
-
-                    else if (typeof oldValue !== "undefined") {
-                        if (oldValue.hasOwnProperty("name"))
-                            this.name = oldValue.name.get();
-                        if (oldValue.hasOwnProperty("color"))
-                            this.color = oldValue.color.get();
-                    }
-                    else {
-                        this.name = "";
-                        this.color = "";
-                    }
-                },
-                immediate: true
-
             }
         },
+
         methods: {
             hideBimObj: function () {
                 this.$emit('hide-bim-object', [this.nodeId]);

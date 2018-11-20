@@ -3,8 +3,8 @@
         <node-header class="node-header"
                      v-if="nodes.hasOwnProperty(nodeId)"
                      :has-child="childrenIds.length > 0"
-                     :info="nodes[nodeId].info"
-                     :opened="opened"
+                     :name="name"
+                     :color="nodes[nodeId].info.name"
                      :node-id="nodeId"
                      @hide-bim-object="$emit('hide-bim-object',$event)"
                      @node-selected="$emit('node-selected', $event)"
@@ -25,19 +25,15 @@
 </template>
 
 <script>
-    import DropUpDownButton from "../Button/DropUpDownButton.vue";
-    import BaseIconButton from "../Button/BaseIconButton.vue";
-    import ColorMaker from "../ColorMarker/ColorMaker.vue";
     import NodeHeader from "./NodeHeader.vue";
 
     export default {
         name: "NodeItem",
 
-        components: {NodeHeader, ColorMaker, BaseIconButton, DropUpDownButton},
+        components: {NodeHeader},
         data: function () {
             return {
                 opened: false,
-                preoped: false,
                 childrenIds: [],
                 node: {}
             }
@@ -51,6 +47,18 @@
             nodeId: {
                 type: String,
                 required: true
+            }
+        },
+
+        computed: {
+            color: function () {
+                if (this.nodes.hasOwnProperty(this.nodeId) && this.nodes[this.nodeId].info.hasOwnProperty("color"))
+                    return this.nodes[this.nodeId].info.color.get();
+                else
+                    return "";
+            },
+            name: function() {
+                return this.nodes[this.nodeId].info.name;
             }
         },
 
