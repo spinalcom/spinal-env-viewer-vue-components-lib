@@ -17,7 +17,7 @@
                    :nodes="nodes"
                    :node-id="child"
                    @node-selected="onNodeSelected($event)"
-                   @pull-node="pullNode($event)"
+                   @pull-children="pullChildren($event)"
         />
 
     </div>
@@ -37,6 +37,7 @@
         data: function () {
             return {
                 opened: false,
+                preoped: false,
                 childrenIds: [],
                 node: {}
             }
@@ -55,18 +56,16 @@
 
         methods: {
             displayChildren: function () {
-                for (let i = 0; i < this.childrenIds; i++) {
-                    this.$emit("pull-node", this.childrenIds[i]);
-                }
                 this.opened = !this.opened;
+            },
 
-            },
-            pullNode: function (event) {
+            pullChildren: function (event) {
                 if (typeof event === "undefined")
-                    this.$emit('pull-node', this.nodeId);
+                    this.$emit('pull-children', this.nodeId);
                 else
-                    this.$emit('pull-node', event);
+                    this.$emit('pull-children', event);
             },
+
             onNodeSelected: function (event) {
                 if (typeof event === "undefined")
                     this.$emit('node-selected', [this.nodeId]);
@@ -79,40 +78,23 @@
 
         watch: {
             nodes: {
-                handler: function (oldValue, newValue) {
-
-                    if (typeof newValue !== "undefined"
-                        && newValue.hasOwnProperty(this.nodeId)
-                    ) {
+                handler: function (newValue) {
+                    if (newValue.hasOwnProperty(this.nodeId)) {
                         this.node = newValue[this.nodeId];
-                        this.childrenIds = this.node.getChildrenIds();
-                    }
-                    else if (typeof oldValue !== "undefined"
-                        && oldValue.hasOwnProperty(this.nodeId)
-                    ) {
-                        this.node = oldValue[this.nodeId];
+
                         const childrenIds = this.node.getChildrenIds();
+                        if (this.childrenIds.length <= 0)
+                            this.$emit('pull-children', this.nodeId);
 
                         for (let i = 0; i < childrenIds.length; i++) {
-                            this.childrenIds.push(childrenIds[i]);
+                            if (!this.childrenIds.includes(childrenIds[i]))
+                                this.childrenIds.push(childrenIds[i]);
                         }
-                    }
-                    else {
-                        this.node = {};
-                        this.childrenIds = [];
                     }
                 },
                 immediate: true
             },
-
-        },
-
-        mounted: function () {
-            if (!this.nodes.hasOwnProperty(this.nodeId)) {
-                this.$emit("pull-node");
-            }
         }
-
     }
 </script>
 
