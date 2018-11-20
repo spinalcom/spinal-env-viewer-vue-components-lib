@@ -1,29 +1,26 @@
 <template>
-    <ul class="node-item">
-        <node-header
-                v-if="nodes.hasOwnProperty(nodeId)"
-                :has-child="childrenIds.length > 0"
-                :info="nodes[nodeId].info"
-                :opened="opened"
-                :node-id="nodeId"
-                @hide-bim-object="$emit('hide-bim-object',$event)"
-                @node-selected="$emit('node-selected', $event)"
-                @toggle-display-child="displayChildren()"
+    <div>
+        <node-header class="node-header"
+                     v-if="nodes.hasOwnProperty(nodeId)"
+                     :has-child="childrenIds.length > 0"
+                     :info="nodes[nodeId].info"
+                     :opened="opened"
+                     :node-id="nodeId"
+                     @hide-bim-object="$emit('hide-bim-object',$event)"
+                     @node-selected="$emit('node-selected', $event)"
+                     @toggle-display-child="displayChildren()"
+        />
+        <node-item class="node-item"
+                   v-for="(child, index) in childrenIds"
+                   v-if="opened"
+                   :key="index"
+                   :nodes="nodes"
+                   :node-id="child"
+                   @node-selected="onNodeSelected($event)"
+                   @pull-node="pullNode($event)"
         />
 
-        <li
-                v-for="(child, index) in childrenIds"
-                v-if="opened"
-                :key="index"
-        >
-            <node-item
-                    :nodes="nodes"
-                    :node-id="child"
-                    @node-selected="onNodeSelected($event)"
-                    @pull-node="pullNode($event)"
-            />
-        </li>
-    </ul>
+    </div>
 
 </template>
 
@@ -58,7 +55,11 @@
 
         methods: {
             displayChildren: function () {
+                for (let i = 0; i < this.childrenIds; i++) {
+                    this.$emit("pull-node", this.childrenIds[i]);
+                }
                 this.opened = !this.opened;
+
             },
             pullNode: function (event) {
                 if (typeof event === "undefined")
@@ -69,8 +70,7 @@
             onNodeSelected: function (event) {
                 if (typeof event === "undefined")
                     this.$emit('node-selected', [this.nodeId]);
-                else
-                {
+                else {
                     event.push(this.nodeId);
                     this.$emit('node-selected', event);
                 }
@@ -81,13 +81,13 @@
             nodes: {
                 handler: function (oldValue, newValue) {
 
-                    if ( typeof newValue !== "undefined"
+                    if (typeof newValue !== "undefined"
                         && newValue.hasOwnProperty(this.nodeId)
                     ) {
                         this.node = newValue[this.nodeId];
                         this.childrenIds = this.node.getChildrenIds();
                     }
-                    else if ( typeof oldValue !== "undefined"
+                    else if (typeof oldValue !== "undefined"
                         && oldValue.hasOwnProperty(this.nodeId)
                     ) {
                         this.node = oldValue[this.nodeId];
@@ -103,30 +103,23 @@
                     }
                 },
                 immediate: true
-            }
+            },
+
         },
+
         mounted: function () {
-            if (!this.nodes.hasOwnProperty(this.nodeId)){
+            if (!this.nodes.hasOwnProperty(this.nodeId)) {
                 this.$emit("pull-node");
             }
-
         }
 
     }
 </script>
 
 <style scoped>
-
-    ul{
-        padding-inline-start: 0px;
-    }
-    li {
-        padding-inline-start: 18px;
-    }
-
     .node-item {
         width: 100%;
-        list-style-type: none;
+        padding-inline-start: 18px;
     }
 
 

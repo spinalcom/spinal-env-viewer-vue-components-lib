@@ -1,12 +1,12 @@
 <template>
     <div class="tool-bar">
-            <a  v-for="(b, index) in buttons" v-bind:key="index">
-                <base-badge-icon-button
-                        :button="b.button"
-                        :badge_content="b.badge_content"
-                        @click="b.button.action(option)"/>
-            </a>
-
+        <base-badge-icon-button
+                class="icon-button"
+                v-for="(b, index) in buttons"
+                :key="index"
+                :button="b.button"
+                :badge_content="b.badge_content"
+                @click="b.button.action(option)"/>
     </div>
 </template>
 
@@ -22,14 +22,17 @@
                 required: true,
             },
             option: {
-                type:Object
+                type: Object
             }
         }
     }
 </script>
 
 <style scoped>
-    .tool-bar{
+    .icon-button{
+        margin: 0;
+    }
+    .tool-bar {
         min-width: 30px;
         min-height: 30px;
     }

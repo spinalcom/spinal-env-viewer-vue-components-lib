@@ -1,6 +1,7 @@
 <template>
     <div class="node-header"
-         @click="$emit('node-selected', [nodeId])">
+         @click="$emit('node-selected', [nodeId])"
+    >
         <drop-up-down-button
                 class="node-list-icon"
                 :opened="opened"
@@ -54,14 +55,18 @@
         watch: {
             hasChild: {
                 handler: function (oldValue, newValue) {
-                    if (!newValue) {
-                        this.isVisible = "";
+                    if (typeof newValue === "undefined") {
+                        if (typeof oldValue !== "undefined" && !oldValue)
+                            this.isVisible = "hidden"
+
+                    }
+                    else if (!newValue) {
+                        this.isVisible = "hidden";
                     }
                     else {
                         this.isVisible = "";
                     }
-                }
-                ,
+                },
                 immediate: true
             },
             info: {

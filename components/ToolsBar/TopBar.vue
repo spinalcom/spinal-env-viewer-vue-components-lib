@@ -25,7 +25,7 @@
 
 <style scoped>
     .top-bar {
-        border: 2px solid;
+
         min-width: 100%;
         min-height: 30px;
     }

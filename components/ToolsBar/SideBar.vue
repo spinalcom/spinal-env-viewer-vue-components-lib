@@ -25,7 +25,7 @@
 
 <style scoped>
     .sideBar{
-        border: 2px solid;
+
         height: 100%;
         width: 50px;
     }
