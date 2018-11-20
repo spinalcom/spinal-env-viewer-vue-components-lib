@@ -1,12 +1,13 @@
 <template>
-    <div class="items">
+    <div class="nodes-list">
         <node-item class="item"
-                   v-for="(node, index) in nodes"
-                   :key="'node' + index"
-                   :info="node.info"
-                   :children="node.children"
-                   :context="node.context"
+                   v-for="(id, index) in contextIds"
+                   :key="index"
+                   :nodes="nodes"
+                   :node-id="id"
                    @node-selected="$emit('node-selected', $event)"
+                   @hide-bim-object="$emit('hide-bim-object', $event)"
+                   @pull-node="$emit('pull-node',$event)"
         />
     </div>
 
@@ -20,23 +21,24 @@
         components: {NodeItem},
         props: {
             nodes: {
+                type: Object,
+                default: function () {
+                    return []
+                }
+            },
+
+            contextIds: {
                 type: Array,
                 default: function () {
                     return []
                 }
-            }
-        },
-        methods: {
-            item: function(event){
-                console.log(event)
             }
         }
     }
 </script>
 
 <style scoped>
-    .items {
+    .nodes-list{
         width: 100%;
-        border: 2px solid;
     }
 </style>

@@ -1,6 +1,8 @@
 <template>
-    <div id="colorItem" :style="style">
-
+    <div id="colorItem" :style="{background: color,  width: width}">
+        <div :style="{visibility: 'hidden'}">
+            color
+        </div>
     </div>
 </template>
 
@@ -13,25 +15,12 @@
                 default: function () {
                     return "";
                 }
-            }
-        },
-        data: function () {
-            return {
-                style: ''
-            }
-        },
-        methods: {
-            getStyle: function () {
-                if (this.color !== "")
-                    this.style = "background:" + this.color + "; width: 15px";
-                else
-                    this.style = "width: 15px";
-            }
-        },
-        watch: {
-            style: {
-                handler: 'getStyle',
-                immediate: true
+            },
+            width: {
+                type: String,
+                default: function () {
+                    return "10px";
+                }
             }
         }
     }

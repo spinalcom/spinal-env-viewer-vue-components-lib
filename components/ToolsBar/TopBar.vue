@@ -1,7 +1,7 @@
 <template>
     <tools-bar class="top-bar"
             :buttons="buttons"
-            :option="graph"
+            :option="option"
     />
 </template>
 
@@ -16,7 +16,7 @@
                 type: Array,
                 required: true,
             },
-            graph:{
+            option:{
                 type: Object
             }
         }
@@ -25,7 +25,7 @@
 
 <style scoped>
     .top-bar {
-        border: 2px solid;
+
         min-width: 100%;
         min-height: 30px;
     }
