@@ -1,21 +1,28 @@
 <template>
     <div class="tool-bar">
-        <base-badge-icon-button
-                class="icon-button"
-                v-for="(b, index) in buttons"
-                :key="index"
-                :button="b.button"
-                :badge_content="b.badge_content"
-                @click="b.button.action(option)"/>
+        <spinal-badge-icon-button
+                :background-color="b.button.backgroundColor"
+                :font-color="b.button.fontColor"
+                :icon="b.button.icon"
+                :icon_type="b.button.icon_type"
+                :tool-tip="b.button.toolTip"
+                :tool-tip-direction="b.button.toolTip"
+                :badge_background_color="b.badge_content.backgroundColor"
+                :badge_font_color="b.badge_content.fontColor"
+                :badge_label="b.badge_content.label"
+                @click="b.button.action(option)"
+        />
     </div>
 </template>
 
 <script>
-    import BaseBadgeIconButton from "../Button/BaseBadgeIconButton.vue";
+
+
+    import SpinalBadgeIconButton from "../Button/SpinalBadgeIconButton";
 
     export default {
         name: "ToolsBar",
-        components: {BaseBadgeIconButton},
+        components: {SpinalBadgeIconButton},
         props: {
             buttons: {
                 type: Array,
@@ -29,9 +36,6 @@
 </script>
 
 <style scoped>
-    .icon-button{
-        margin: 0;
-    }
     .tool-bar {
         min-width: 30px;
         min-height: 30px;
