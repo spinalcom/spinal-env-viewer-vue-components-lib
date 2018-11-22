@@ -12,7 +12,7 @@
         name: "DropUpDownButton",
         computed: {
             icon: function () {
-                return this.opened ? "arrow_drop_up" : "arrow_drop_down";
+                return this.opened ? "arrow_drop_down" : "arrow_right" ;
             }
         },
         data: function () {
