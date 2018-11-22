@@ -8,14 +8,25 @@
         <spinal-icon-button
                 @click="$emit('click')"
                 :icon="icon"
+                :tool-tip="toolTip"
+                tool-tip-delay="300"
+                :tool-tip-direction="toolTipDirection"
+                :font-color="fontColor"
+                :background-color="backgroundColor"
         />
     </md-badge>
 
     <!-- Normal button -->
     <spinal-icon-button
-            :icon="icon"
             @click="$emit('click')"
             v-else
+            :icon="icon"
+            :icon_type="icon_type"
+            :tool-tip="toolTip"
+            tool-tip-delay="300"
+            :tool-tip-direction="toolTipDirection"
+            :font-color="fontColor"
+            :background-color="backgroundColor"
     />
 
 </template>
