@@ -2,6 +2,7 @@
     <div>
         <node-header class="node-header"
                      v-if="nodes.hasOwnProperty(nodeId)"
+                     :style="{'background-color': backgroundColor}"
                      :has-child="childrenIds.length > 0"
                      :name="name"
                      :color="nodes[nodeId].info.name"
@@ -47,6 +48,12 @@
             nodeId: {
                 type: String,
                 required: true
+            },
+            backgroundColor: {
+                type: String,
+                default: function () {
+                    return ""
+                }
             }
         },
 
@@ -57,7 +64,7 @@
                 else
                     return "";
             },
-            name: function() {
+            name: function () {
                 return this.nodes[this.nodeId].info.name;
             }
         },
@@ -91,7 +98,7 @@
                         this.node = newValue[this.nodeId];
 
                         const childrenIds = this.node.getChildrenIds();
-                        if (this.childrenIds.length <= 0)
+                        if (typeof childrenIds !== "undefined" && this.childrenIds.length <= 0)
                             this.$emit('pull-children', this.nodeId);
 
                         for (let i = 0; i < childrenIds.length; i++) {
@@ -111,6 +118,9 @@
         width: 100%;
         padding-inline-start: 18px;
     }
+    .node-header{
+        border: 1px solid rgba(0, 0, 0, 0.50);
 
+    }
 
 </style>

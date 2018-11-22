@@ -1,24 +1,28 @@
 <template>
     <div class="node-header"
-         @click="$emit('node-selected', [nodeId])"
-    >
+         @click="$emit('node-selected', [nodeId])">
+
         <drop-up-down-button
                 class="node-list-icon"
                 @click="$emit('toggle-display-child')"
-                :style="{visibility: isVisible}"
-        />
+                :style="{visibility: isVisible}"/>
+
         <div class="node-name">
             {{name}}
         </div>
+
         <i class="material-icons node-hide-bim"
            @click="hideBimObj()"
+           v-if="showHideObject"
         >
             remove_red_eye
         </i>
+
         <color-maker
                 class="node-color"
                 :color="color"
         />
+
     </div>
 </template>
 
@@ -50,6 +54,12 @@
                 type: String,
                 default: function() {
                     return ""
+                }
+            },
+            showHideObject: {
+                type: Boolean,
+                default: function () {
+                    return false
                 }
             }
 

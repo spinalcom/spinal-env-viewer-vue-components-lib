@@ -22,9 +22,11 @@
 import NodeHeader from "./NodeHeader.vue";
 import NodeItem from "./NodeItem.vue";
 import NodeList from "./NodesList.vue";
+import ChildInspector from "./ChildInspector.vue"
 
 export default {
     NodeHeader,
     NodeItem,
-    NodeList
+    NodeList,
+    ChildInspector
 }

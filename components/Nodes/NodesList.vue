@@ -1,6 +1,6 @@
 <template>
     <div class="nodes-list">
-        <node-item class="item"
+        <node-item class="nodes-list-context"
                    v-for="(id, index) in contextIds"
                    :key="index"
                    :nodes="nodes"
@@ -8,6 +8,7 @@
                    @node-selected="$emit('node-selected', $event)"
                    @hide-bim-object="$emit('hide-bim-object', $event)"
                    @pull-children="$emit('pull-children',$event)"
+                   background-color="rgba(46, 46, 46, 0.5)"
         />
     </div>
 
@@ -38,7 +39,11 @@
 </script>
 
 <style scoped>
-    .nodes-list{
+    .nodes-list {
         width: 100%;
+    }
+
+    .nodes-list-context {
+
     }
 </style>
