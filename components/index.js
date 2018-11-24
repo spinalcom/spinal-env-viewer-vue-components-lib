@@ -21,15 +21,22 @@
  *
  */
 
-import Buttons from "./Button/index";
+import {SpinalBadgeIconButton, DropUpDownButton, SpinalIconButton} from "./Button/index";
 import ColorMarker from "./ColorMarker/ColorMaker.vue";
-import Nodes from "./Nodes/index";
-import ToolsBar from "./ToolsBar/index";
+import {NodeList, ChildInspector, NodeHeader, NodeItem} from "./Nodes/index";
+import {ToolsBar, SideBar, TopBar} from "./ToolsBar/index";
 
 
-export default {
-    Buttons,
+export {
+    SpinalBadgeIconButton,
+    DropUpDownButton,
+    SpinalIconButton,
     ColorMarker,
-    Nodes,
+    NodeList,
+    ChildInspector,
+    NodeHeader,
+    NodeItem,
+    SideBar,
+    TopBar,
     ToolsBar
 }
