@@ -21,5 +21,22 @@
  *
  */
 
-import Components from "./components/index"
-export default Components;
+import {SpinalBadgeIconButton, DropUpDownButton, SpinalIconButton} from "./components/Button";
+import ColorMarker from "./components/ColorMarker/ColorMaker.vue";
+import {NodeList, ChildInspector, NodeHeader, NodeItem} from "./components/Nodes";
+import {ToolsBar, SideBar, TopBar} from "./components/ToolsBar";
+
+
+export {
+    SpinalBadgeIconButton,
+    DropUpDownButton,
+    SpinalIconButton,
+    ColorMarker,
+    NodeList,
+    ChildInspector,
+    NodeHeader,
+    NodeItem,
+    SideBar,
+    TopBar,
+    ToolsBar
+}
