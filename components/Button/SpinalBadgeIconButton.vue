@@ -34,7 +34,7 @@
 <script>
 
 
-    import SpinalIconButton from "./SpinalIconButton";
+    import SpinalIconButton from "./SpinalIconButton.vue";
 
     export default {
         name: "SpinalBadgeIconButton",

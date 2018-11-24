@@ -34,7 +34,8 @@
                     return data === "left"
                         || data === "right"
                         || data === "top"
-                        || data === "bottom";
+                        || data === "bottom"
+                        || data === "";
                 }
             },
             toolTipDelay: {

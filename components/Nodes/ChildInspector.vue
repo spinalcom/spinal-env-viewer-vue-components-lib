@@ -29,8 +29,8 @@
 </template>
 
 <script>
-    import NodeHeader from "./NodeHeader";
-    import SpinalIconButton from "../Button/SpinalIconButton";
+    import NodeHeader from "./NodeHeader.vue";
+    import SpinalIconButton from "../Button/SpinalIconButton.vue";
 
     export default {
         name: "ChildInspector",

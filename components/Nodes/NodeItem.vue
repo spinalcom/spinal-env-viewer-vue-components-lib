@@ -5,7 +5,8 @@
                      :style="{'background-color': backgroundColor}"
                      :has-child="childrenIds.length > 0"
                      :name="name"
-                     :color="nodes[nodeId].info.name"
+                     :color="color"
+                     :show-hide-object="showHideObject"
                      :node-id="nodeId"
                      @hide-bim-object="$emit('hide-bim-object',$event)"
                      @node-selected="$emit('node-selected', $event)"
@@ -54,6 +55,12 @@
                 default: function () {
                     return ""
                 }
+            },
+            showHideObject: {
+                type:Boolean,
+                default: function () {
+                    return false;
+                }
             }
         },
 
@@ -65,7 +72,7 @@
                     return "";
             },
             name: function () {
-                return this.nodes[this.nodeId].info.name;
+                return this.nodes[this.nodeId].info.name.get();
             }
         },
 
@@ -117,10 +124,6 @@
     .node-item {
         width: 100%;
         padding-inline-start: 18px;
-    }
-    .node-header{
-        border: 1px solid rgba(0, 0, 0, 0.50);
-
     }
 
 </style>

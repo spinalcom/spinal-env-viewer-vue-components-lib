@@ -9,6 +9,7 @@
                    @hide-bim-object="$emit('hide-bim-object', $event)"
                    @pull-children="$emit('pull-children',$event)"
                    background-color="rgba(46, 46, 46, 0.5)"
+                   :show-hide-object="true"
         />
     </div>
 
