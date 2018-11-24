@@ -24,7 +24,7 @@ import SpinalBadgeIconButton from "./SpinalBadgeIconButton.vue"
 import SpinalIconButton from "./SpinalIconButton.vue"
 import DropUpDownButton from "./DropUpDownButton.vue"
 
-export default {
+export  {
     DropUpDownButton,
     SpinalBadgeIconButton,
     SpinalIconButton

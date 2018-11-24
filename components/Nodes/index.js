@@ -24,7 +24,7 @@ import NodeItem from "./NodeItem.vue";
 import NodeList from "./NodesList.vue";
 import ChildInspector from "./ChildInspector.vue"
 
-export default {
+export  {
     NodeHeader,
     NodeItem,
     NodeList,

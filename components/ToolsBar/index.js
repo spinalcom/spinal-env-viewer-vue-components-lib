@@ -23,7 +23,7 @@ import SideBar from "./SideBar.vue";
 import TopBar from "./TopBar.vue";
 import ToolsBar from "./ToolsBar.vue"
 
-export default {
+export  {
     SideBar,
     TopBar,
     ToolsBar
