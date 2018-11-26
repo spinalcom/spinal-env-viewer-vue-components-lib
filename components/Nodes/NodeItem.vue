@@ -108,9 +108,9 @@
             nodes: {
                 handler: function (newValue) {
                     if (newValue.hasOwnProperty(this.nodeId)) {
-                        if (typeof this.node !== "undefined" && this.node instanceof globalType.Model){
-                            this.binder = "undefined";
+                        if (typeof this.node !== "undefined" && typeof this.node.unbind === "function" ){
                             this.node.unbind(this.binder);
+                            this.binder = "undefined";
                         }
 
                         this.node = newValue[this.nodeId];
