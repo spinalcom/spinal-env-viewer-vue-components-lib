@@ -130,8 +130,11 @@
         },
 
         beforeDestroy: function () {
-            if (typeof this.node !== "undefined")
-                this.node.unbind(this.watchNode.bind(this));
+
+            if (typeof this.node !== "undefined" && typeof this.node.unbind === "function" ){
+                this.node.unbind(this.binder);
+                this.binder = "undefined";
+            }
         }
     }
 </script>
