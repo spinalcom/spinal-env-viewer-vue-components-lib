@@ -95,6 +95,11 @@
                     event.push(this.nodeId);
                     this.$emit('node-selected', event);
                 }
+            },
+
+            watchNode: function () {
+                if (typeof this.node !== "undefined")
+                    this.childrenIds = this.node.getChildrenIds();
             }
         },
 
@@ -102,8 +107,11 @@
             nodes: {
                 handler: function (newValue) {
                     if (newValue.hasOwnProperty(this.nodeId)) {
-                        this.node = newValue[this.nodeId];
+                        if (typeof this.node !== "undefined")
+                            this.node.unbind(this.watchNode.bind(this));
 
+                        this.node = newValue[this.nodeId];
+                        this.node.bind(this.watchNode.bind(this));
                         const childrenIds = this.node.getChildrenIds();
                         if (typeof childrenIds !== "undefined" && this.childrenIds.length <= 0)
                             this.$emit('pull-children', this.nodeId);
@@ -116,6 +124,11 @@
                 },
                 immediate: true
             },
+        },
+
+        beforeDestroy: function () {
+            if (typeof this.node !== "undefined")
+                this.node.unbind(this.watchNode.bind(this));
         }
     }
 </script>
