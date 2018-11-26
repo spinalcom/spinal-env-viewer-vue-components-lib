@@ -28,7 +28,7 @@
 
 <script>
     import NodeHeader from "./NodeHeader.vue";
-
+    const globalType = typeof window === "undefined" ? global : window
     export default {
         name: "NodeItem",
 
@@ -37,7 +37,8 @@
             return {
                 opened: false,
                 childrenIds: [],
-                node: {}
+                node: {},
+                binder: {}
             }
         },
 
@@ -107,11 +108,13 @@
             nodes: {
                 handler: function (newValue) {
                     if (newValue.hasOwnProperty(this.nodeId)) {
-                        if (typeof this.node !== "undefined")
-                            this.node.unbind(this.watchNode.bind(this));
+                        if (typeof this.node !== "undefined" && this.node instanceof globalType.Model){
+                            this.binder = "undefined";
+                            this.node.unbind(this.binder);
+                        }
 
                         this.node = newValue[this.nodeId];
-                        this.node.bind(this.watchNode.bind(this));
+                        this.binder =  this.node.bind(this.watchNode.bind(this));
                         const childrenIds = this.node.getChildrenIds();
                         if (typeof childrenIds !== "undefined" && this.childrenIds.length <= 0)
                             this.$emit('pull-children', this.nodeId);
