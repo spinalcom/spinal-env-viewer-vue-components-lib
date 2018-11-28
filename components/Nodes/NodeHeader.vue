@@ -20,8 +20,7 @@
 
         <color-maker
                 class="node-color"
-                :color="color"
-        />
+                :color="color"/>
 
     </div>
 </template>
@@ -64,10 +63,9 @@
             }
 
         },
-
-        computed: {
-            isVisible: function() {
-                return this.hasChild ? "" : "hidden";
+        data: function() {
+            return {
+                isVisible : ""
             }
         },
 

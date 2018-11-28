@@ -13,11 +13,12 @@
                      @toggle-display-child="displayChildren()"
         />
         <node-item class="node-item"
-                   v-for="(child, index) in childrenIds"
                    v-if="opened"
+                   v-for="(child, index) in childrenIds"
                    :key="index"
                    :nodes="nodes"
                    :node-id="child"
+                   :ids="ids"
                    @node-selected="onNodeSelected($event)"
                    @pull-children="pullChildren($event)"
         />
@@ -28,7 +29,6 @@
 
 <script>
     import NodeHeader from "./NodeHeader.vue";
-    const globalType = typeof window === "undefined" ? global : window
     export default {
         name: "NodeItem",
 
@@ -36,9 +36,9 @@
         data: function () {
             return {
                 opened: false,
-                childrenIds: [],
                 node: {},
-                binder: {}
+                binder: {},
+                childrenIds: []
             }
         },
 
@@ -61,6 +61,12 @@
                 type:Boolean,
                 default: function () {
                     return false;
+                }
+            },
+            ids: {
+                type: Array,
+                default: function () {
+                    return []
                 }
             }
         },
@@ -98,37 +104,22 @@
                 }
             },
 
-            watchNode: function () {
-                if (typeof this.node !== "undefined")
-                    this.childrenIds = this.node.getChildrenIds();
-            }
         },
 
         watch: {
-            nodes: {
-                handler: function (newValue) {
-                    if (newValue.hasOwnProperty(this.nodeId)) {
-                        if (typeof this.node !== "undefined" && typeof this.node.unbind === "function" ){
-                            this.node.unbind(this.binder);
-                            this.binder = "undefined";
-                        }
+            ids: {
+                handler: function () {
+                    if (typeof this.nodes[this.nodeId] !== "undefined" && typeof this.nodes[this.nodeId].info !== "undefined")
+                    {
+                        this.childrenIds = this.nodes[this.nodeId].getChildrenIds();
+                        console.log(this.nodes[this.nodeId].info.name.get(), "ids")
 
-                        this.node = newValue[this.nodeId];
-                        this.binder =  this.node.bind(this.watchNode.bind(this));
-                        const childrenIds = this.node.getChildrenIds();
-                        if (typeof childrenIds !== "undefined" && this.childrenIds.length <= 0)
-                            this.$emit('pull-children', this.nodeId);
-
-                        for (let i = 0; i < childrenIds.length; i++) {
-                            if (!this.childrenIds.includes(childrenIds[i]))
-                                this.childrenIds.push(childrenIds[i]);
-                        }
                     }
+
                 },
                 immediate: true
-            },
+            }
         },
-
         beforeDestroy: function () {
 
             if (typeof this.node !== "undefined" && typeof this.node.unbind === "function" ){
