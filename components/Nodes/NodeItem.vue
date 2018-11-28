@@ -112,8 +112,6 @@
                     if (typeof this.nodes[this.nodeId] !== "undefined" && typeof this.nodes[this.nodeId].info !== "undefined")
                     {
                         this.childrenIds = this.nodes[this.nodeId].getChildrenIds();
-                        console.log(this.nodes[this.nodeId].info.name.get(), "ids")
-
                     }
 
                 },
