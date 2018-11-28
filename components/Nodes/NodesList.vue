@@ -9,6 +9,7 @@
                    @hide-bim-object="$emit('hide-bim-object', $event)"
                    @pull-children="$emit('pull-children',$event)"
                    background-color="rgba(46, 46, 46, 0.5)"
+                   :ids="childrenIds"
                    :show-hide-object="true"
         />
     </div>
@@ -33,6 +34,13 @@
                 type: Array,
                 default: function () {
                     return []
+                }
+            },
+
+            childrenIds: {
+                type: Array,
+                default: function () {
+                    return {}
                 }
             }
         }
