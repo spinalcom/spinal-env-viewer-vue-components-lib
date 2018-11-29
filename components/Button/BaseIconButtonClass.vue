@@ -1,14 +1,10 @@
 <template>
     <md-button class="md-icon-button"
                @click="$emit('click')"
-               :style="{background: backgroundColor}"
+               v-tooltip="toolTip"
     >
-        <md-tooltip :md-delay="toolTipDelay"
-                    :md-direction="toolTipDirection"
-                    v-if="toolTip.length > 0">
-            {{toolTip}}
-        </md-tooltip>
-        <md-icon :class="icon" :style="{width: width, color: fontColor}"/>
+
+        <md-icon  :class="icon" :style="{width: width, color: fontColor}"/>
     </md-button>
 </template>
 

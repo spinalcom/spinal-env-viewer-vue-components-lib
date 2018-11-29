@@ -1,15 +1,16 @@
 <template>
-    <div>
+    <div v-if="isInContext()">
         <node-header class="node-header"
                      v-if="nodes.hasOwnProperty(nodeId)"
-                     :style="{'background-color': backgroundColor}"
+                     :style="{'background-color': background()}"
                      :has-child="hasChildren()"
                      :name="name"
                      :color="color"
                      :show-hide-object="showHideObject"
                      :node-id="nodeId"
                      @hide-bim-object="$emit('hide-bim-object',$event)"
-                     @node-selected="$emit('node-selected', $event)"
+                     @active-node="onActiveNode($event)"
+                     @node-selected="onNodeSelected($event)"
                      @toggle-display-child="displayChildren()"
         />
         <node-item class="node-item"
@@ -19,8 +20,12 @@
                    :nodes="nodes"
                    :node-id="child"
                    :ids="ids"
+                   :context-id="contextId"
+                   :active-node="activeNode"
+                   @active-node="onActiveNode($event)"
                    @node-selected="onNodeSelected($event)"
                    @pull-children="pullChildren($event)"
+                   :show-hide-object="showHideObject"
         />
 
     </div>
@@ -69,6 +74,14 @@
                 default: function () {
                     return []
                 }
+            },
+            activeNode: {
+                type: Object,
+                required: true
+            },
+            contextId: {
+                type: String,
+                required: true
             }
         },
 
@@ -81,7 +94,10 @@
             },
             name: function () {
                 return this.nodes[this.nodeId].info.name.get();
-            }
+            },
+
+
+
         },
 
         methods: {
@@ -103,10 +119,43 @@
                     event.push(this.nodeId);
                     this.$emit('node-selected', event);
                 }
+
             },
+
             hasChildren: function () {
-                console.log(this.name, "call " + this.childrenIds.length)
                 return this.childrenIds.length > 0;
+            },
+
+            isInContext: function () {
+                if (typeof this.nodes === "undefined" || !this.nodes.hasOwnProperty(this.nodeId))
+                    return false;
+
+                const node = this.nodes[this.nodeId];
+                if (this.nodeId === this.contextId)
+                    return true;
+                if (node.hasOwnProperty("contextIds")) {
+                    const contextIds = node.contextIds;
+                    return contextIds.has(this.contextId)
+                }
+
+                return false
+            },
+
+            onActiveNode: function (event) {
+                if (!event.hasOwnProperty('contextId'))
+                    event['contextId'] = this.contextId;
+
+                this.$emit('active-node', event)
+            },
+            background: function () {
+                if (this.activeNode.nodeId === this.nodeId && this.activeNode.contextId === this.contextId)
+                    return "#2D3D93";
+                else {
+                    this.activeNode['loris'] = {nodeId: this.nodeId, context: this.contextId}
+                    console.log(this.name, this.activeNode)
+                }
+
+                return this.backgroundColor
             }
         },
 
@@ -114,7 +163,6 @@
             ids: {
                 handler: function () {
                     if (typeof this.nodes[this.nodeId] !== "undefined") {
-                        console.log("size before " + this.name, this.childrenIds.length)
                         const tmp = this.nodes[this.nodeId].getChildrenIds();
 
                         if (tmp.length !== this.childrenIds.length)
@@ -125,7 +173,6 @@
                                 this.childrenIds.push(tmp[i])
                         }
 
-                        console.log("size after " + this.name, this.childrenIds.length)
                     }
                 },
                 immediate: true

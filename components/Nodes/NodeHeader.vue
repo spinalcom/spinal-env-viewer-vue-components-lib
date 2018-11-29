@@ -1,6 +1,6 @@
 <template>
     <div class="node-header"
-         @click="$emit('node-selected', [nodeId])">
+         @click="onClick()">
 
         <drop-up-down-button
                 class="node-list-icon"
@@ -14,6 +14,8 @@
         <i class="material-icons node-hide-bim"
            @click="hideBimObj()"
            v-if="showHideObject"
+           :style="{'font-size': '18px'}"
+           v-tooltip="'show bim object'"
         >
             remove_red_eye
         </i>
@@ -86,6 +88,11 @@
         methods: {
             hideBimObj: function () {
                 this.$emit('hide-bim-object', [this.nodeId]);
+            },
+            onClick: function () {
+
+                this.$emit('active-node', {nodeId: this.nodeId});
+                this.$emit('node-selected', [this.nodeId]);
             }
         }
     }

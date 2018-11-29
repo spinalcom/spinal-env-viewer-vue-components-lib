@@ -8,9 +8,12 @@
                    @node-selected="$emit('node-selected', $event)"
                    @hide-bim-object="$emit('hide-bim-object', $event)"
                    @pull-children="$emit('pull-children',$event)"
+                   @active-node="$emit('active-node', $event)"
+                   :context-id="id"
                    background-color="rgba(46, 46, 46, 0.5)"
                    :ids="childrenIds"
                    :show-hide-object="true"
+                   :active-node="activeNode"
         />
     </div>
 
@@ -42,6 +45,10 @@
                 default: function () {
                     return {}
                 }
+            },
+            activeNode: {
+                type: Object,
+                required: true
             }
         }
     }
