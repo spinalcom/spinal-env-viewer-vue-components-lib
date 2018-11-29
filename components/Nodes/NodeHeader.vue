@@ -71,13 +71,8 @@
 
         watch: {
             hasChild: {
-                handler: function (oldValue, newValue) {
-                    if (typeof newValue === "undefined") {
-                        if (typeof oldValue !== "undefined" && !oldValue)
-                            this.isVisible = "hidden"
-
-                    }
-                    else if (!newValue) {
+                handler: function (newValue) {
+                    if (!newValue) {
                         this.isVisible = "hidden";
                     }
                     else {

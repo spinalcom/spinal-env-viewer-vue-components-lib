@@ -3,7 +3,7 @@
         <node-header class="node-header"
                      v-if="nodes.hasOwnProperty(nodeId)"
                      :style="{'background-color': backgroundColor}"
-                     :has-child="childrenIds.length > 0"
+                     :has-child="hasChildren()"
                      :name="name"
                      :color="color"
                      :show-hide-object="showHideObject"
@@ -29,6 +29,7 @@
 
 <script>
     import NodeHeader from "./NodeHeader.vue";
+
     export default {
         name: "NodeItem",
 
@@ -58,7 +59,7 @@
                 }
             },
             showHideObject: {
-                type:Boolean,
+                type: Boolean,
                 default: function () {
                     return false;
                 }
@@ -103,24 +104,36 @@
                     this.$emit('node-selected', event);
                 }
             },
-
+            hasChildren: function () {
+                console.log(this.name, "call " + this.childrenIds.length)
+                return this.childrenIds.length > 0;
+            }
         },
 
         watch: {
             ids: {
                 handler: function () {
-                    if (typeof this.nodes[this.nodeId] !== "undefined" && typeof this.nodes[this.nodeId].info !== "undefined")
-                    {
-                        this.childrenIds = this.nodes[this.nodeId].getChildrenIds();
-                    }
+                    if (typeof this.nodes[this.nodeId] !== "undefined") {
+                        console.log("size before " + this.name, this.childrenIds.length)
+                        const tmp = this.nodes[this.nodeId].getChildrenIds();
 
+                        if (tmp.length !== this.childrenIds.length)
+                            this.$forceUpdate();
+
+                        for (let i = 0; i < tmp.length; i++) {
+                            if (!this.childrenIds.includes(tmp[i]))
+                                this.childrenIds.push(tmp[i])
+                        }
+
+                        console.log("size after " + this.name, this.childrenIds.length)
+                    }
                 },
                 immediate: true
             }
         },
         beforeDestroy: function () {
 
-            if (typeof this.node !== "undefined" && typeof this.node.unbind === "function" ){
+            if (typeof this.node !== "undefined" && typeof this.node.unbind === "function") {
                 this.node.unbind(this.binder);
                 this.binder = "undefined";
             }
