@@ -1,7 +1,6 @@
 <template>
     <div v-if="isInContext()">
         <node-header class="node-header"
-                     v-if="nodes.hasOwnProperty(nodeId)"
                      :style="{'background-color': background()}"
                      :has-child="hasChildren()"
                      :name="name"
@@ -22,10 +21,11 @@
                    :ids="ids"
                    :context-id="contextId"
                    :active-node="activeNode"
+                   :show-hide-object="showHideObject"
                    @active-node="onActiveNode($event)"
                    @node-selected="onNodeSelected($event)"
                    @pull-children="pullChildren($event)"
-                   :show-hide-object="showHideObject"
+
         />
 
     </div>
@@ -33,9 +33,9 @@
 </template>
 
 <script>
-    import NodeHeader from "./NodeHeader.vue";
+  import NodeHeader from "./NodeHeader.vue";
 
-    export default {
+  export default {
         name: "NodeItem",
 
         components: {NodeHeader},
@@ -87,17 +87,14 @@
 
         computed: {
             color: function () {
-                if (this.nodes.hasOwnProperty(this.nodeId) && this.nodes[this.nodeId].info.hasOwnProperty("color"))
-                    return this.nodes[this.nodeId].info.color.get();
+              if (this.nodes.hasOwnProperty( this.nodeId ) && this.nodes[this.nodeId].hasOwnProperty( "color" ))
+                return this.nodes[this.nodeId].color.get();
                 else
                     return "";
             },
             name: function () {
-                return this.nodes[this.nodeId].info.name.get();
+              return this.nodes[this.nodeId].name.get();
             },
-
-
-
         },
 
         methods: {
@@ -147,12 +144,12 @@
 
                 this.$emit('active-node', event)
             },
+
             background: function () {
                 if (this.activeNode.nodeId === this.nodeId && this.activeNode.contextId === this.contextId)
                     return "#2D3D93";
                 else {
-                    this.activeNode['loris'] = {nodeId: this.nodeId, context: this.contextId}
-                    console.log(this.name, this.activeNode)
+                  this.activeNode['loris'] = { nodeId: this.nodeId, context: this.contextId };
                 }
 
                 return this.backgroundColor
@@ -163,11 +160,9 @@
             ids: {
                 handler: function () {
                     if (typeof this.nodes[this.nodeId] !== "undefined") {
-                        const tmp = this.nodes[this.nodeId].getChildrenIds();
-
-                        if (tmp.length !== this.childrenIds.length)
-                            this.$forceUpdate();
-
+                      console.log( "loris", this.nodeId[this.nodeId] );
+                      const tmp = this.nodes[this.nodeId].childrenIds;
+                      if (typeof tmp !== "undefined")
                         for (let i = 0; i < tmp.length; i++) {
                             if (!this.childrenIds.includes(tmp[i]))
                                 this.childrenIds.push(tmp[i])
@@ -178,7 +173,8 @@
                 immediate: true
             }
         },
-        beforeDestroy: function () {
+
+    beforeDestroy: function () {
 
             if (typeof this.node !== "undefined" && typeof this.node.unbind === "function") {
                 this.node.unbind(this.binder);
