@@ -93,6 +93,7 @@
                     return "";
             },
             name: function () {
+
               return this.nodes[this.nodeId].name.get();
             },
         },
@@ -160,7 +161,6 @@
             ids: {
                 handler: function () {
                     if (typeof this.nodes[this.nodeId] !== "undefined") {
-                      console.log( "loris", this.nodeId[this.nodeId] );
                       const tmp = this.nodes[this.nodeId].childrenIds;
                       if (typeof tmp !== "undefined")
                         for (let i = 0; i < tmp.length; i++) {
