@@ -6,9 +6,9 @@
 </template>
 
 <script>
-    import ToolsBar from "./ToolsBar.vue";
+  import ToolsBar from "./ToolsBar.vue";
 
-    export default {
+  export default {
         name: "topBar",
         components: {ToolsBar},
         props: {
@@ -25,8 +25,6 @@
 
 <style scoped>
     .top-bar {
-
-        min-width: 100%;
         min-height: 30px;
     }
 </style>
