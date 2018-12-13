@@ -20,16 +20,16 @@
 </template>
 
 <script>
-    import NodeItem from "./NodeItem.vue";
+  import NodeItem from "./NodeItem.vue";
 
-    export default {
+  export default {
         name: "NodesList",
         components: {NodeItem},
         props: {
             nodes: {
                 type: Object,
                 default: function () {
-                    return []
+                  return {}
                 }
             },
 
