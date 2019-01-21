@@ -43,6 +43,7 @@
             <div class="child-inspector-child-delete-buttons">
                 <i class="material-icons"
                    v-on:click="$emit('remove-from-parent', info.id)"
+
                 >
                     delete
                 </i>
