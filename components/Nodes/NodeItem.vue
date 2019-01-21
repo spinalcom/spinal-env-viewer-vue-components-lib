@@ -1,30 +1,38 @@
 <template>
-    <div v-if="isInContext()">
-        <node-header class="node-header"
-                     :style="{'background-color': background()}"
-                     :has-child="hasChildren()"
-                     :name="name"
-                     :color="color"
-                     :show-hide-object="showHideObject"
-                     :node-id="nodeId"
-                     @hide-bim-object="$emit('hide-bim-object',$event)"
-                     @active-node="onActiveNode($event)"
-                     @node-selected="onNodeSelected($event)"
-                     @toggle-display-child="displayChildren()"
+    <div v-if="isInContext">
+
+        <node-header
+                :class="{active: isActive, context: isContext}"
+                :color="color"
+                :has-child="nodeInfo.childrenIds.length > 0"
+                :name="name"
+                :show-hide-bim-object="showHideBimObject"
+                :opened="opened"
+                @click="onHeaderClick"
+                @hide-bim-object="onHideBimObject"
+                @right-click="onHeaderRightClick"
+                @toggle-display-child="onToggleDisplayChildren"
         />
-        <node-item class="node-item"
-                   v-if="opened"
-                   v-for="(child, index) in childrenIds"
-                   :key="index"
-                   :nodes="nodes"
-                   :node-id="child"
-                   :ids="ids"
-                   :context-id="contextId"
-                   :active-node="activeNode"
-                   :show-hide-object="showHideObject"
-                   @active-node="onActiveNode($event)"
-                   @node-selected="onNodeSelected($event)"
-                   @pull-children="pullChildren($event)"
+
+        <node-item
+                class="node-item"
+                v-if="opened"
+                v-for="(child, index) in childrenIds"
+
+                :refresh="refresh"
+                :active-nodes-id="activeNodesId"
+                :context-id="contextId"
+                :node-info="getNode(child)"
+                :get-node="getNode"
+                :key="index"
+                :node-id="child"
+                :show-hide-object="showHideBimObject"
+                :pull-children="pullChildren"
+
+
+                @click="$emit('click', $event)"
+                @hide-bim-object="$emit('hide-bim-object', $event)"
+                @right-click="$emit('click-right', $event)"
 
         />
 
@@ -39,149 +47,162 @@
     name: "NodeItem",
 
     components: { NodeHeader },
+
     data: function () {
       return {
         opened: false,
-        node: {},
-        binder: {},
-        childrenIds: []
       }
     },
 
     props: {
-      nodes: {
-        type: Object,
-        required: true,
-      },
-      nodeId: {
-        type: String,
-        required: true
-      },
-      backgroundColor: {
-        type: String,
-        default: function () {
-          return ""
-        }
-      },
-      showHideObject: {
+      refresh: {
         type: Boolean,
         default: function () {
           return false;
         }
       },
-      ids: {
+      activeNodesId: {
         type: Array,
         default: function () {
           return []
         }
       },
-      activeNode: {
-        type: Object,
+      nodeId: {
+        type: String,
         required: true
       },
       contextId: {
         type: String,
         required: true
+      },
+      getNode: {
+        type: Function,
+        default: function () {
+          return function () {
+            return {};
+          }
+        }
+      },
+      nodeInfo: {
+        type: Object,
+        default: function () {
+          return {}
+        }
+      },
+      showHideBimObject: {
+        type: Boolean,
+        default: function () {
+          return false;
+        }
+      },
+
+      pullChildren: {
+        type: Function
       }
     },
 
     computed: {
-      color: function () {
-        if (this.nodes.hasOwnProperty( this.nodeId ) && this.nodes[this.nodeId].hasOwnProperty( "color" ))
-          return this.nodes[this.nodeId].color.get();
-        else
-          return "";
+      isActive: function () {
+        return this.activeNodesId.includes( this.nodeId )
+      },
+      isContext: function () {
+        return this.nodeId === this.contextId;
       },
       name: function () {
-        if (this.nodes.hasOwnProperty( this.nodeId ) && this.nodes[this.nodeId].hasOwnProperty( 'name' ))
-          return this.nodes[this.nodeId].name.get();
-        return ""
+
+        if (this.nodeInfo.hasOwnProperty( 'name' ))
+          return this.nodeInfo.name.get();
+        return '';
       },
+      color: function () {
+        const node = this.getNode( this.nodeId );
+        if (typeof node !== "undefined" && node.hasOwnProperty( 'color' ))
+          return node.color.get();
+      },
+      isInContext: function () {
+
+        if (
+          (typeof this.nodeInfo !== "undefined")
+          && (this.nodeInfo.hasOwnProperty( 'contextIds' ))
+        ) {
+          return this.nodeInfo.contextIds.has( this.contextId ) ||
+            this.contextId === this.nodeId;
+        }
+
+        return false;
+      },
+
+      childrenIds: function () {
+        return this.nodeInfo.childrenIds;
+      }
     },
 
     methods: {
-      displayChildren: function () {
+      onHideBimObject: function ( event ) {
+        if (this.showHideBimObject) {
+          if (typeof event === "undefined")
+            event = this.nodeId;
+          this.emit( 'hide-bim-object', event );
+        }
+      },
+
+      onToggleDisplayChildren: function () {
         this.opened = !this.opened;
-      },
+      }
+      ,
 
-      pullChildren: function ( event ) {
-        if (typeof event === "undefined")
-          this.$emit( 'pull-children', this.nodeId );
-        else
-          this.$emit( 'pull-children', event );
-      },
+      onHeaderClick: function () {
 
-      onNodeSelected: function ( event ) {
-        if (typeof event === "undefined")
-          this.$emit( 'node-selected', [this.nodeId] );
-        else {
-          event.push( this.nodeId );
-          this.$emit( 'node-selected', event );
-        }
+        const event = {};
+        event['contextId'] = this.contextId;
+        event['nodeId'] = this.nodeId;
+        this.$emit( 'click', event )
 
-      },
+      }
+      ,
 
-      hasChildren: function () {
-        return this.childrenIds.length > 0;
-      },
+      onHeaderRightClick: function () {
 
-      isInContext: function () {
-        if (typeof this.nodes === "undefined" || !this.nodes.hasOwnProperty( this.nodeId ))
-          return false;
+        const event = {};
+        event['contextId'] = this.contextId;
+        event['nodeId'] = this.nodeId;
+        this.$emit( 'right-click', event )
 
-        const node = this.nodes[this.nodeId];
-        if (this.nodeId === this.contextId)
-          return true;
-        if (node.hasOwnProperty( "contextIds" )) {
-          const contextIds = node.contextIds;
-          return contextIds.has( this.contextId )
-        }
-
-        return false
-      },
-
-      onActiveNode: function ( event ) {
-        if (!event.hasOwnProperty( 'contextId' ))
-          event['contextId'] = this.contextId;
-
-        this.$emit( 'active-node', event )
-      },
-
-      background: function () {
-        if (this.activeNode.nodeId === this.nodeId && this.activeNode.contextId === this.contextId)
-          return "#2D3D93";
-
-        return this.backgroundColor
-      },
-
-      getChildrenId() {
-        return this.nodes[this.nodeId].childrenIds
       }
     },
-
     watch: {
-      ids: {
-        handler: function () {
-          if (typeof this.nodes[this.nodeId] !== "undefined") {
-            const tmp = this.nodes[this.nodeId].childrenIds;
-            if (typeof tmp !== "undefined")
-              for (let i = 0; i < tmp.length; i++) {
-                if (!this.childrenIds.includes( tmp[i] ))
-                  this.childrenIds.push( tmp[i] )
-              }
-
+      'refresh':
+        {
+          handler: function ( value ) {
+            this.opened = false;
           }
-        },
-        immediate: true
+          ,
+          immediate: true
+        }
+    },
+    mounted() {
+      if (typeof this.pullChildren === "function") {
+        this.pullChildren( this.nodeId );
       }
+
     }
+
   }
 </script>
 
 <style scoped>
     .node-item {
         width: 100%;
-        padding-inline-start: 18px;
+        padding-left: 18px;
     }
+
+    .active {
+        color: #365bab;
+    }
+
+    .context {
+        background-color: rgba(46, 46, 46, 0.5);
+    }
+
 
 </style>

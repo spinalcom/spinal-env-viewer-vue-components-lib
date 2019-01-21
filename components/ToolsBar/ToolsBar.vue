@@ -31,7 +31,8 @@
                 required: true,
             },
             option: {
-                type: Object
+                type: Object,
+
             }
         }
     }

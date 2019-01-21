@@ -20,12 +20,12 @@
  *
  */
 
-import SpinalBadgeIconButton from "./SpinalBadgeIconButton.vue"
-import SpinalIconButton from "./SpinalIconButton.vue"
-import DropUpDownButton from "./DropUpDownButton.vue"
+import SpinalBadgeIconButton from "./SpinalBadgeIconButton.vue";
+import SpinalIconButton from "./SpinalIconButton.vue";
+import DropUpDownButton from "./DropUpDownButton.vue";
 
-export  {
-    DropUpDownButton,
-    SpinalBadgeIconButton,
-    SpinalIconButton
-}
+export {
+  DropUpDownButton,
+  SpinalBadgeIconButton,
+  SpinalIconButton
+};

@@ -1,33 +1,51 @@
+<!--
+
+- Copyright 2019 SpinalCom - www.spinalcom.com
+-
+-  This file is part of SpinalCore.
+-
+-  Please read all of the following terms and conditions
+-  of the Free Software license Agreement ("Agreement")
+-  carefully.
+-
+-  This Agreement is a legally binding contract between
+-  the Licensee (as defined below) and SpinalCom that
+-  sets forth the terms and conditions that govern your
+-  use of the Program. By installing and/or using the
+-  Program, you agree to abide by all the terms and
+-  conditions stated or referenced herein.
+-
+-  If you do not agree to abide by these terms and
+-  conditions, do not demonstrate your acceptance and do
+-  not install or use the Program.
+-  You should have received a copy of the license along
+-  with this file. If not, see
+-  <http://resources.spinalcom.com/licenses.pdf>.
+-->
 <template>
     <div class="child-inspector">
-        <h1 class="child-inspector-name">
-                {{name}}
-            </h1>
+        <div class="child-inspector-name">
+            {{name}}
+        </div>
+        <md-field v-if="relationNames.length > 0">
+            <label for="relationNames">Relations</label>
+            <md-select id="relationNames" name="relationName" v-model="relationName">
+                <md-option :key="index" :value="name" v-for="(name, index) in relationNames">{{name}}</md-option>
+            </md-select>
+        </md-field>
 
         <div :key="index" class="child-inspector-child" v-for="(info, index) in childInfo">
 
             <div class="child-inspector-child-name">
-                <h2>
                     {{info.name.get()}}
-                </h2>
             </div>
 
             <div class="child-inspector-child-delete-buttons">
-
-                <spinal-icon-button
-                        class="child-inspector-delete-child"
-                        icon="delete"
-                        tool-tip="suppress child"
-                        v-on:click="emit('remove-from-parent', {'node-info': info, inspectedNodeId})"
-                />
-
-                <spinal-icon-button
-                        :icon="deleteForEvenerIcon"
-                        class="child-inspector-remove-child-from-graph"
-                        icon_type="src"
-                        tool-tip="remove child from graph"
-                        v-on:click="emit('delete-node', {'node-info': info, inspectedNodeId})"
-                />
+                <i class="material-icons"
+                   v-on:click="$emit('remove-from-parent', info.id)"
+                >
+                    delete
+                </i>
 
             </div>
 
@@ -59,19 +77,29 @@
       defaultRelationName: {
         type: String,
         default: function () {
-          return ""
+          return "";
+        }
+      },
+      relationNames: {
+        type: Array,
+        default: function () {
+          return [];
         }
       }
     },
     data: function () {
       return {
-        relationName: "hah",
+        relationName: this.defaultRelationName,
         deleteForEvenerIcon: deleteForEvener
       }
     },
-
-    mounted() {
-      this.relationName = this.defaultRelationName;
+    watch: {
+      relationName: {
+        handler: function ( newValue ) {
+          if (newValue !== "")
+            this.$emit( 'get-children', newValue );
+        }
+      }
     }
 
   }
@@ -79,6 +107,9 @@
 
 <style scoped>
 
+    .child-inspector{
+        width: 50%;
+    }
 
     .child-inspector-name {
         text-align: center;
@@ -86,26 +117,23 @@
         text-overflow: ellipsis;
         white-space: nowrap;
         overflow: hidden;
-        width: calc(100% - 77px);
-
-
+        font-size: 28px;
     }
 
     .child-inspector-child-name {
-        height: 55px;
+        height: 15px;
         padding-left: 5%;
 
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
-        width: calc(100% - 77px);
     }
 
     .child-inspector-child {
         border: 1px solid #979797;
         position: relative;
         width: 100%;
-        height: 55px;
+        height: 30px;
     }
 
     .child-inspector-child-delete-buttons {
@@ -113,7 +141,6 @@
         right: 0;
         top: 5px;
         display: flex;
-
     }
 
 </style>

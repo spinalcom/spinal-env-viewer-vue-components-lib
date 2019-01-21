@@ -1,101 +1,87 @@
 <template>
     <div class="node-header"
-         @click="onClick()">
+         @click.right="$emit('right-click')"
+    >
 
         <drop-up-down-button
                 class="node-list-icon"
+                :opened="opened"
                 @click="$emit('toggle-display-child')"
-                :style="{visibility: isVisible}"/>
+                :style="{visibility: isDropDownVisible}"/>
 
-        <div class="node-name">
-            {{name}}
+        <div @click.left="$emit('click')">
+            <div class="node-name">
+                {{name}}
+            </div>
+
+            <i class="material-icons node-hide-bim"
+               :style="{'font-size': '18px', 'opacity': '0.7'}"
+               @click="$emit('hide-bim-object')"
+               v-if="showHideBimObject"
+               v-tooltip="'show bim object'"
+            >
+                visibility
+            </i>
+
+            <color-maker
+                    class="node-color"
+                    :color="color"/>
         </div>
 
-        <i class="material-icons node-hide-bim"
-           @click="hideBimObj()"
-           v-if="showHideObject"
-           :style="{'font-size': '18px'}"
-           v-tooltip="'show bim object'"
-        >
-            remove_red_eye
-        </i>
-
-        <color-maker
-                class="node-color"
-                :color="color"/>
 
     </div>
 </template>
 
 <script>
-    import DropUpDownButton from "../Button/DropUpDownButton.vue";
-    import ColorMaker from "../ColorMarker/ColorMaker.vue";
+  import DropUpDownButton from "../Button/DropUpDownButton.vue";
+  import ColorMaker from "../ColorMarker/ColorMaker.vue";
 
-    export default {
-        name: "NodeHeader",
-        components: {ColorMaker, DropUpDownButton},
-        props: {
-
-            hasChild: {
-                type: Boolean,
-                required: true
-            },
-
-            name: {
-                type: String,
-                required: true
-            },
-
-            nodeId: {
-                type: String,
-                required: true
-            },
-
-            color: {
-                type: String,
-                default: function() {
-                    return ""
-                }
-            },
-            showHideObject: {
-                type: Boolean,
-                default: function () {
-                    return false
-                }
-            }
-
-        },
-        data: function() {
-            return {
-                isVisible : ""
-            }
-        },
-
-        watch: {
-            hasChild: {
-                handler: function (newValue) {
-                    if (!newValue) {
-                        this.isVisible = "hidden";
-                    }
-                    else {
-                        this.isVisible = "";
-                    }
-                },
-                immediate: true
-            }
-        },
-
-        methods: {
-            hideBimObj: function () {
-                this.$emit('hide-bim-object', [this.nodeId]);
-            },
-            onClick: function () {
-
-                this.$emit('active-node', {nodeId: this.nodeId});
-                this.$emit('node-selected', [this.nodeId]);
-            }
+  export default {
+    name: "NodeHeader",
+    components: { ColorMaker, DropUpDownButton },
+    props: {
+      opened: {
+        type: Boolean,
+        default: function () {
+          return false;
+        }},
+      hasChild: {
+        type: Boolean,
+        default: function () {
+          return false;
         }
+      },
+
+      showHideBimObject: {
+        type: Boolean,
+        default: function () {
+          return false
+        }
+      },
+
+      name: {
+        type: String,
+        default: function () {
+          return "UNKNOWN NAME"
+        }
+      },
+
+      color: {
+        type: String,
+        default: function () {
+          return ""
+        }
+      }
+    },
+    computed: {
+      isDropDownVisible: function () {
+        if (!this.hasChild) {
+          return "hidden";
+        }
+        return "";
+      }
     }
+  }
 </script>
 
 <style scoped>
