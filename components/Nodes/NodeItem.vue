@@ -221,7 +221,8 @@
     }
 
     .active {
-        background-color: #365bab;
+
+        background-color: #365bab !important;
     }
 
     .context {
