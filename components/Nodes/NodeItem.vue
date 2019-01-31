@@ -28,10 +28,11 @@
         <node-header
                 :class="{active: isActive, context: isContext}"
                 :color="color"
-                :has-child="hasChildInContext(nodeId, contextId)"
+                :has-child="hasChildInContext(nodeInfo.id.get(), contextId)"
                 :name="name"
                 :show-hide-bim-object="showHideBimObject"
                 :opened="opened"
+
                 @click="onHeaderClick"
                 @hide-bim-object="onHideBimObject"
                 @right-click="onHeaderRightClick"
@@ -41,18 +42,17 @@
         <node-item
                 class="node-item"
                 v-if="opened"
-                v-for="(child, index) in childrenIds"
+                v-for="(child) in nodeInfo.childrenIds.filter(onlyUnique)"
+                :key="child"
 
 
                 :active-nodes-id="activeNodesId"
                 :context-id="contextId"
-                :has-child-in-context="hasChildInContext"
-                :get-node="getNode"
-                :key="index"
-                :node-id="child"
-                :show-hide-object="showHideBimObject"
-                :pull-children="pullChildren"
+                :nodes="nodes"
+                :node-info="nodes[child]"
 
+                :has-child-in-context="hasChildInContext"
+                :show-hide-object="showHideBimObject"
 
                 @click="$emit('click', $event)"
                 @hide-bim-object="$emit('hide-bim-object', $event)"
@@ -74,35 +74,30 @@
 
     data: function () {
       return {
-        opened: false,
+        opened: false
       }
     },
 
     props: {
-
       activeNodesId: {
         type: Array,
         default: function () {
           return []
         }
       },
-      nodeId: {
-        type: String,
-        required: true
-      },
       contextId: {
         type: String,
         required: true
       },
-      getNode: {
-        type: Function,
+      nodes: {
+        type: Object,
         default: function () {
-          return function () {
-            return {};
-          }
+          return {}
         }
       },
-
+      nodeInfo: {
+        type: Object,
+      },
       showHideBimObject: {
         type: Boolean,
         default: function () {
@@ -111,61 +106,53 @@
       },
       hasChildInContext: {
         type: Function,
-
         required: true
-      },
-      pullChildren: {
-        type: Function
       }
     },
 
     computed: {
-      nodeInfo: function(){
-        return this.getNode(this.nodeId)
-      },
+
       isActive: function () {
-        return this.activeNodesId.includes( this.nodeId )
+        return this.activeNodesId.includes( this.nodeInfo.id.get() )
       },
       isContext: function () {
-        return this.nodeId === this.contextId;
+        return this.nodeInfo.id.get() === this.contextId;
       },
       name: function () {
-
         if (this.nodeInfo.hasOwnProperty( 'name' ))
           return this.nodeInfo.name.get();
-        return '';
+        return 'Uknown Name';
       },
       color: function () {
-        const node = this.getNode( this.nodeId );
-        if (typeof node !== "undefined" && node.hasOwnProperty( 'color' ))
-          return node.color.get();
+
+        if (
+          (typeof this.nodeInfo !== "undefined")
+          && (this.nodeInfo.hasOwnProperty( 'color' ))
+        )
+          return this.nodeInfo.color.get();
       },
       isInContext: function () {
-
         if (
           (typeof this.nodeInfo !== "undefined")
           && (this.nodeInfo.hasOwnProperty( 'contextIds' ))
         ) {
           return this.nodeInfo.contextIds.has( this.contextId ) ||
-            this.contextId === this.nodeId;
+            this.contextId === this.nodeInfo.id.get();
         }
 
         return false;
       },
 
-      childrenIds: function () {
-        function onlyUnique(value, index, self) {
-          return self.indexOf(value) === index;
-        }
-        return this.nodeInfo.childrenIds.filter(onlyUnique);
-      }
     },
 
     methods: {
+      onlyUnique: function( value, index, self ) {
+        return self.indexOf( value ) === index;
+      },
       onHideBimObject: function ( event ) {
         if (this.showHideBimObject) {
           if (typeof event === "undefined")
-            event = this.nodeId;
+            event = this.nodeInfo.id.get();
           this.emit( 'hide-bim-object', event );
         }
       },
@@ -178,7 +165,7 @@
 
         const event = {};
         event['contextId'] = this.contextId;
-        event['nodeId'] = this.nodeId;
+        event['nodeId'] = this.nodeInfo.id.get();
         this.$emit( 'click', event )
 
       },
@@ -187,18 +174,12 @@
 
         const event = {};
         event['contextId'] = this.contextId;
-        event['nodeId'] = this.nodeId;
+        event['nodeId'] = this.nodeInfo.id.get();
         this.$emit( 'right-click', event )
 
       }
-    },
-
-    mounted() {
-      if (typeof this.pullChildren === "function") {
-        this.pullChildren( this.nodeId );
-      }
-
     }
+
 
   }
 </script>

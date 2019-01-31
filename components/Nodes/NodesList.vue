@@ -1,16 +1,18 @@
 <template>
     <div class="nodes-list">
         <node-item class="nodes-list-context"
-                   v-for="(id, index) in contextsId"
-                   :key="index"
+                   v-for="(id) in contextsId"
+                   :key="id"
 
                    :active-nodes-id="activeNodesId"
-                   :node-id="id"
                    :context-id="id"
-                   :get-node="getNode"
-                   :node-info="nodes.get(id)"
+                   :nodes="nodes"
+                   :node-info="nodes[id]"
+
                    :show-hide-bim-object="showHideBimObject"
                    :has-child-in-context="hasChildInContext"
+
+
                    @click="$emit('click', $event)"
                    @hide-bim-object="$emit('hide-bim-object', $event)"
                    @right-click="$emit('right-click', $event)"
@@ -26,6 +28,7 @@
     name: "NodesList",
     components: { NodeItem },
     props: {
+
       showHideBimObject: {
         type: Boolean,
         default: function () {
@@ -40,15 +43,6 @@
         }
       },
 
-      getNode: {
-        type: Function,
-        default: function () {
-          return function () {
-            return {};
-          }
-        }
-      },
-
       activeNodesId: {
         type: Array,
         required: true,
@@ -56,12 +50,14 @@
           return [];
         }
       },
-      nodes: {
 
+      nodes: {
+        type: Object,
         default: function (  ) {
-          return new Map();
+          return {};
         }
       },
+
       hasChildInContext: {
         type: Function,
         required: true
