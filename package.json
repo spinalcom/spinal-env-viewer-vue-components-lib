@@ -1,6 +1,6 @@
 {
   "name": "spinal-env-viewer-vue-components-lib",
-  "version": "0.3.0",
+  "version": "1.0.0",
   "description": "spinalcom",
   "main": "index.js",
   "scripts": {
