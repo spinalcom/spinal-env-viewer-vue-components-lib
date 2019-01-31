@@ -28,7 +28,7 @@
         <node-header
                 :class="{active: isActive, context: isContext}"
                 :color="color"
-                :has-child="nodeInfo.childrenIds.length > 0"
+                :has-child="hasChildInContext(nodeId, contextId)"
                 :name="name"
                 :show-hide-bim-object="showHideBimObject"
                 :opened="opened"
@@ -43,10 +43,10 @@
                 v-if="opened"
                 v-for="(child, index) in childrenIds"
 
-                :refresh="refresh"
+
                 :active-nodes-id="activeNodesId"
                 :context-id="contextId"
-                :node-info="getNode(child)"
+                :has-child-in-context="hasChildInContext"
                 :get-node="getNode"
                 :key="index"
                 :node-id="child"
@@ -79,12 +79,7 @@
     },
 
     props: {
-      refresh: {
-        type: Boolean,
-        default: function () {
-          return false;
-        }
-      },
+
       activeNodesId: {
         type: Array,
         default: function () {
@@ -107,25 +102,27 @@
           }
         }
       },
-      nodeInfo: {
-        type: Object,
-        default: function () {
-          return {}
-        }
-      },
+
       showHideBimObject: {
         type: Boolean,
         default: function () {
           return false;
         }
       },
+      hasChildInContext: {
+        type: Function,
 
+        required: true
+      },
       pullChildren: {
         type: Function
       }
     },
 
     computed: {
+      nodeInfo: function(){
+        return this.getNode(this.nodeId)
+      },
       isActive: function () {
         return this.activeNodesId.includes( this.nodeId )
       },
@@ -157,7 +154,10 @@
       },
 
       childrenIds: function () {
-        return this.nodeInfo.childrenIds;
+        function onlyUnique(value, index, self) {
+          return self.indexOf(value) === index;
+        }
+        return this.nodeInfo.childrenIds.filter(onlyUnique);
       }
     },
 
@@ -172,8 +172,7 @@
 
       onToggleDisplayChildren: function () {
         this.opened = !this.opened;
-      }
-      ,
+      },
 
       onHeaderClick: function () {
 
@@ -182,8 +181,7 @@
         event['nodeId'] = this.nodeId;
         this.$emit( 'click', event )
 
-      }
-      ,
+      },
 
       onHeaderRightClick: function () {
 
@@ -194,16 +192,7 @@
 
       }
     },
-    watch: {
-      'refresh':
-        {
-          handler: function ( value ) {
-            this.opened = false;
-          }
-          ,
-          immediate: true
-        }
-    },
+
     mounted() {
       if (typeof this.pullChildren === "function") {
         this.pullChildren( this.nodeId );
@@ -215,13 +204,13 @@
 </script>
 
 <style scoped>
+
     .node-item {
         width: 100%;
         padding-left: 18px;
     }
 
     .active {
-
         background-color: #365bab !important;
     }
 

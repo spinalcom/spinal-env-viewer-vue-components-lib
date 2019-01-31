@@ -4,14 +4,13 @@
                    v-for="(id, index) in contextsId"
                    :key="index"
 
-                   :refresh="refresh"
                    :active-nodes-id="activeNodesId"
                    :node-id="id"
                    :context-id="id"
                    :get-node="getNode"
                    :node-info="nodes.get(id)"
                    :show-hide-bim-object="showHideBimObject"
-                   :pull-children="pullChildren"
+                   :has-child-in-context="hasChildInContext"
                    @click="$emit('click', $event)"
                    @hide-bim-object="$emit('hide-bim-object', $event)"
                    @right-click="$emit('right-click', $event)"
@@ -27,12 +26,6 @@
     name: "NodesList",
     components: { NodeItem },
     props: {
-      refresh : {
-        type: Boolean,
-        default: function () {
-          return false;
-        }
-      },
       showHideBimObject: {
         type: Boolean,
         default: function () {
@@ -69,9 +62,10 @@
           return new Map();
         }
       },
-      pullChildren: {
-        type: Function
-      },
+      hasChildInContext: {
+        type: Function,
+        required: true
+      }
 
     }
   }
