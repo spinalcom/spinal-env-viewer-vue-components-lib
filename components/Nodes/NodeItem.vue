@@ -178,6 +178,10 @@
         this.$emit( 'right-click', event )
 
       }
+    },
+
+    mounted() {
+      this.$emit( 'pull-children', this.nodeInfo.id );
     }
   }
 </script>
