@@ -180,8 +180,9 @@
       }
     },
 
-    mounted() {
-      this.$emit( 'pull-children', this.nodeInfo.id );
+    mounted: function () {
+      console.log( this.nodeInfo.get() );
+      this.$emit( 'pull-children', this.nodeInfo.id.get() );
     }
   }
 </script>
