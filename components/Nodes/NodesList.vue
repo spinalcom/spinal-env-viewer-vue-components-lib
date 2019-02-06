@@ -36,7 +36,6 @@
                    :show-hide-bim-object="showHideBimObject"
                    :has-child-in-context="hasChildInContext"
 
-                   @pull-children="$emit('pull-children', $event)"
                    @click="$emit('click', $event)"
                    @hide-bim-object="$emit('hide-bim-object', $event)"
                    @right-click="$emit('right-click', $event)"
