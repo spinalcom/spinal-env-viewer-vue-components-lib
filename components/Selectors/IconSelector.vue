@@ -24,20 +24,20 @@
 
 <template>
     <div>
-        <label>{{title}}: </label>
+        <label>{{title}} : </label>
 
         <spinal-icon-button
                 v-if="!open"
                 v-on:click="open = !open"
                 :icon="defaultIcon"
                 :tool-tip="defaultToolTip"/>
-        <spinal-icon-button
-                v-else
+        <div class="spinal-icon-selector" v-else>
+        <spinal-icon-button class="spinal-icon-selector-item"
                 v-for="(icon, index) in icons"
                 :key="index"
                 v-on:click="setSelectedIcon(icon)"
                 :icon="icon"/>
-
+        </div>
     </div>
 
 </template>
@@ -97,6 +97,13 @@
 </script>
 
 <style>
+    .spinal-icon-selector{
+        display: grid;
+        grid-template-columns: auto auto auto;
+    }
+    .spinal-icon-selector-item{
+        text-align: center;
+    }
     .md-menu-content {
         z-index: 10;
     }
