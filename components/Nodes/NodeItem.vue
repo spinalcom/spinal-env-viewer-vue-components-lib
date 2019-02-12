@@ -119,7 +119,8 @@
         return this.nodeInfo.id.get() === this.contextId;
       },
       name: function () {
-        if (this.nodeInfo.hasOwnProperty( 'name' ))
+        if (this.nodeInfo.hasOwnProperty( 'name' ) &&
+          typeof this.nodeInfo.name !== "undefined")
           return this.nodeInfo.name.get();
         return 'Uknown Name';
       },
@@ -146,7 +147,7 @@
     },
 
     methods: {
-      onlyUnique: function( value, index, self ) {
+      onlyUnique: function ( value, index, self ) {
         return self.indexOf( value ) === index;
       },
       onHideBimObject: function ( event ) {
