@@ -41,7 +41,8 @@
             <div :key="index" class="node-inspector-child"
                  v-for="(info, index) in childInfo">
 
-                <div class="node-inspector-child-name">
+                <div class="node-inspector-child-name"
+                     v-if="info.hasOwnProperty('name')">
                     {{info.name.get()}}
                 </div>
 
@@ -91,6 +92,7 @@
         }
       }
     },
+
     data: function () {
       return {
         relationName: this.defaultRelationName,
