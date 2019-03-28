@@ -23,35 +23,38 @@
 -  <http://resources.spinalcom.com/licenses.pdf>.
 -->
 <template>
-    <div class="child-inspector">
-        <div class="child-inspector-name">
+    <div class="node-inspector">
+
+        <div class="node-inspector-name">
             {{name}}
         </div>
         <md-field v-if="relationNames.length > 0">
             <label for="relationNames">Relations</label>
-            <md-select id="relationNames" name="relationName" v-model="relationName">
-                <md-option :key="index" :value="name" v-for="(name, index) in relationNames">{{name}}</md-option>
+            <md-select id="relationNames" name="relationName"
+                       v-model="relationName">
+                <md-option :key="index" :value="name"
+                           v-for="(name, index) in relationNames">{{name}}
+                </md-option>
             </md-select>
         </md-field>
+        <div class="node-inspector-children">
+            <div :key="index" class="node-inspector-child"
+                 v-for="(info, index) in childInfo">
 
-        <div :key="index" class="child-inspector-child" v-for="(info, index) in childInfo">
-
-            <div class="child-inspector-child-name">
+                <div class="node-inspector-child-name">
                     {{info.name.get()}}
+                </div>
+
+                <div class="node-inspector-child-delete-buttons">
+                    <i class="material-icons"
+                       v-on:click="$emit('remove-from-parent', info.id)">
+                        delete
+                    </i>
+
+                </div>
+
             </div>
-
-            <div class="child-inspector-child-delete-buttons">
-                <i class="material-icons"
-                   v-on:click="$emit('remove-from-parent', info.id)"
-
-                >
-                    delete
-                </i>
-
-            </div>
-
         </div>
-
 
     </div>
 </template>
@@ -62,7 +65,7 @@
   import deleteForEvener from './remove-forever.svg'
 
   export default {
-    name: "ChildInspector",
+    name: "NodeInspector",
     components: { SpinalIconButton, NodeHeader },
     props: {
       name: {
@@ -107,12 +110,7 @@
 </script>
 
 <style scoped>
-
-    .child-inspector{
-        width: 50%;
-    }
-
-    .child-inspector-name {
+    .node-inspector-name {
         text-align: center;
         height: 30px;
         text-overflow: ellipsis;
@@ -120,28 +118,52 @@
         overflow: hidden;
         font-size: 28px;
     }
+    .node-inspector-children{
+        overflow-y: auto;
+        max-height: 40vh;
+    }
 
-    .child-inspector-child-name {
-        height: 15px;
-        padding-left: 5%;
 
+    .node-inspector-children::-webkit-scrollbar {
+        width: 4px;
+        -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+        background-color: #121212;
+    }
+
+    .node-inspector-children::-webkit-scrollbar-track {
+        -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    }
+    .node-inspector-children::-webkit-scrollbar-thumb {
+        outline: 1px solid slategrey;
+        background-color: #737374;
+    }
+
+
+    .node-inspector-child {
+        border: 1px solid #979797;
+        position: relative;
+        width: 100%;
+        height: 30px;
+        display: flex;
+        padding: 4px;
+    }
+
+    .node-inspector-child-name {
+        padding-left: 4%;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
     }
 
-    .child-inspector-child {
-        border: 1px solid #979797;
-        position: relative;
-        width: 100%;
-        height: 30px;
-    }
-
-    .child-inspector-child-delete-buttons {
+    .node-inspector-child-delete-buttons {
         position: absolute;
-        right: 0;
-        top: 5px;
+        right: 4%;
         display: flex;
     }
+
+    .node-inspector{
+        max-height: 70vh;
+    }
+
 
 </style>

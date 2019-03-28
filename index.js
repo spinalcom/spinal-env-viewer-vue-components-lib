@@ -29,7 +29,7 @@ import {
 import ColorMarker from "./components/ColorMarker/ColorMaker.vue";
 import {
   NodeList,
-  ChildInspector,
+  NodeInspector,
   NodeHeader,
   NodeItem
 } from "./components/Nodes";
@@ -47,7 +47,7 @@ export {
   SpinalIconButton,
   ColorMarker,
   NodeList,
-  ChildInspector,
+  NodeInspector,
   NodeHeader,
   NodeItem,
   SideBar,
