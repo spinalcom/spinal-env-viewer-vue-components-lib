@@ -42,7 +42,7 @@
         <node-item
                 class="node-item"
                 v-if="opened"
-                v-for="(child) in nodeInfo.childrenIds.filter(onlyUnique)"
+                v-for="(child) in nodeInfo.childrenIds.filter(onlyUnique).sort(alphabeticOrder)"
                 :key="child"
 
 
@@ -149,6 +149,9 @@
     methods: {
       onlyUnique: function ( value, index, self ) {
         return self.indexOf( value ) === index;
+      },
+      alphabeticOrder: function(a, b){
+        return (a<b?-1:(a>b?1:0));
       },
       onHideBimObject: function ( event ) {
         if (this.showHideBimObject) {
