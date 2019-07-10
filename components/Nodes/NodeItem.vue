@@ -162,7 +162,15 @@
       },
 
       onToggleDisplayChildren: function () {
-        this.opened = !this.opened;
+        // TO DO 
+        // - peu etre mettre un state "loading" ici ou dans le NodeHeader
+        // - test si on a pas deja pull les children ?
+        this.$store
+          .dispatch("pullChildren", this.nodeInfo.id.get())
+          .then(() => {
+            this.opened = !this.opened;
+          })
+          .catch(e => console.error(e));
       },
 
       onHeaderClick: function () {
