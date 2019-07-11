@@ -49,7 +49,7 @@
                 :active-nodes-id="activeNodesId"
                 :context-id="contextId"
                 :nodes="nodes"
-                :node-info="nodes[child]"
+               :node-info="genNodeRef(nodes[child])"
 
                 :has-child-in-context="hasChildInContext"
                 :show-hide-object="showHideBimObject"
@@ -66,6 +66,7 @@
 
 <script>
   import NodeHeader from "./NodeHeader.vue";
+  import genNodeRef from "./genNodeRef";
 
   export default {
     name: "NodeItem",
@@ -149,6 +150,7 @@
     },
 
     methods: {
+      genNodeRef,
       onlyUnique: function ( value, index, self ) {
         return self.indexOf( value ) === index;
       },
