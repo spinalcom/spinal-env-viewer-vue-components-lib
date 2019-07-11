@@ -42,7 +42,7 @@
         <node-item
                 class="node-item"
                 v-if="opened"
-                v-for="(child) in nodeInfo.childrenIds.filter(onlyUnique)"
+                v-for="(child) in childrenIds"
                 :key="child"
 
 
@@ -143,7 +143,9 @@
 
         return false;
       },
-
+      childrenIds() {
+        return nodeInfo.childrenIds.filter(onlyUnique);
+      }
     },
 
     methods: {
