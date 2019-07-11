@@ -28,7 +28,7 @@
         <node-header
                 :class="{active: isActive, context: isContext}"
                 :color="color"
-                :has-child="hasChildInContext(nodeInfo.id.get(), contextId)"
+                :has-child="hasChildInContext(nodeInfo.id, contextId)"
                 :name="name"
                 :show-hide-bim-object="showHideBimObject"
                 :opened="opened"
@@ -114,15 +114,15 @@
     computed: {
 
       isActive: function () {
-        return this.activeNodesId.includes( this.nodeInfo.id.get() )
+        return this.activeNodesId.includes( this.nodeInfo.id )
       },
       isContext: function () {
-        return this.nodeInfo.id.get() === this.contextId;
+        return this.nodeInfo.id === this.contextId;
       },
       name: function () {
         if (this.nodeInfo.hasOwnProperty( 'name' ) &&
           typeof this.nodeInfo.name !== "undefined")
-          return this.nodeInfo.name.get();
+          return this.nodeInfo.name;
         return 'Uknown Name';
       },
       color: function () {
@@ -131,7 +131,7 @@
           (typeof this.nodeInfo !== "undefined")
           && (this.nodeInfo.hasOwnProperty( 'color' ))
         )
-          return this.nodeInfo.color.get();
+          return this.nodeInfo.color;
       },
       isInContext: function () {
         if (
@@ -139,13 +139,13 @@
           && (this.nodeInfo.hasOwnProperty( 'contextIds' ))
         ) {
           return this.nodeInfo.contextIds.has( this.contextId ) ||
-            this.contextId === this.nodeInfo.id.get();
+            this.contextId === this.nodeInfo.id;
         }
 
         return false;
       },
       childrenIds() {
-        return nodeInfo.childrenIds.filter(onlyUnique);
+        return this.nodeInfo.childrenIds.filter(onlyUnique);
       }
     },
 
@@ -157,7 +157,7 @@
       onHideBimObject: function ( event ) {
         if (this.showHideBimObject) {
           if (typeof event === "undefined")
-            event = this.nodeInfo.id.get();
+            event = this.nodeInfo.id;
           this.emit( 'hide-bim-object', event );
         }
       },
@@ -167,7 +167,7 @@
         // - peu etre mettre un state "loading" ici ou dans le NodeHeader
         // - test si on a pas deja pull les children ?
         this.$store
-          .dispatch("pullChildren", this.nodeInfo.id.get())
+          .dispatch("pullChildren", this.nodeInfo.id)
           .then(() => {
             this.opened = !this.opened;
           })
@@ -178,7 +178,7 @@
 
         const event = {};
         event['contextId'] = this.contextId;
-        event['nodeId'] = this.nodeInfo.id.get();
+        event['nodeId'] = this.nodeInfo.id;
         this.$emit( 'click', event )
 
       },
@@ -187,7 +187,7 @@
 
         const event = {};
         event['contextId'] = this.contextId;
-        event['nodeId'] = this.nodeInfo.id.get();
+        event['nodeId'] = this.nodeInfo.id;
         this.$emit( 'right-click', event )
 
       }
