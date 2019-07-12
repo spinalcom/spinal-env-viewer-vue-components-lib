@@ -103,6 +103,8 @@
         left: 0;
         top: 7px;
         width: 21px;
+        user-select: none;
+        -moz-user-select: none;
     }
 
     .node-name {
