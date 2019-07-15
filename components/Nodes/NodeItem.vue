@@ -138,14 +138,14 @@
           (typeof this.nodeInfo !== "undefined")
           && (this.nodeInfo.hasOwnProperty( 'contextIds' ))
         ) {
-          return this.nodeInfo.contextIds.has( this.contextId ) ||
+          return this.nodeInfo.contextIds.hasOwnProperty( this.contextId ) ||
             this.contextId === this.nodeInfo.id;
         }
 
         return false;
       },
       childrenIds() {
-        return this.nodeInfo.childrenIds.filter(onlyUnique);
+        return this.nodeInfo.childrenIds.filter(this.onlyUnique);
       }
     },
 
