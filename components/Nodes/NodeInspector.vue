@@ -38,15 +38,12 @@
             </md-select>
         </md-field>
         <div class="node-inspector-children">
-            <div :key="info.id.get()" class="node-inspector-child"
-                 v-for="(info) in childInfo">
+            <div :key="index" class="node-inspector-child"
+                 v-for="(info, index) in childInfo">
 
                 <div class="node-inspector-child-name"
                      v-if="info.hasOwnProperty('name')">
                     {{info.name.get()}}
-                </div>
-                <div v-else>
-                    Unnamed
                 </div>
 
                 <div class="node-inspector-child-delete-buttons">
