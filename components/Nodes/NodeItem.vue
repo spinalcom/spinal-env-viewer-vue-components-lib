@@ -49,7 +49,7 @@
                 :active-nodes-id="activeNodesId"
                 :context-id="contextId"
                 :nodes="nodes"
-               :node-info="genNodeRef(nodes[child])"
+                :node-info="genNodeRef(nodes[child])"
 
                 :has-child-in-context="hasChildInContext"
                 :show-hide-object="showHideBimObject"
