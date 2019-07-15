@@ -42,7 +42,7 @@
         <node-item
                 class="node-item"
                 v-if="opened"
-                v-for="(child) in childrenIds"
+                v-for="(child) in childrenIds.filter(onlyUnique)"
                 :key="child"
 
 
