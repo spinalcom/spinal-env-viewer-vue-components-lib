@@ -31,7 +31,7 @@
                    :active-nodes-id="activeNodesId"
                    :context-id="id"
                    :nodes="nodes"
-                   :node-info="nodes[id]"
+                   :node-info="genNodeRef(nodes[id])"
 
                    :show-hide-bim-object="showHideBimObject"
                    :has-child-in-context="hasChildInContext"
@@ -46,6 +46,7 @@
 
 <script>
   import NodeItem from "./NodeItem.vue";
+import genNodeRef from "./genNodeRef";
 
   export default {
     name: "NodesList",
@@ -86,7 +87,11 @@
         required: true
       }
 
-    }
+    },
+    methods: {
+    genNodeRef
+  }
+
   }
 </script>
 

@@ -28,7 +28,7 @@
         <node-header
                 :class="{active: isActive, context: isContext}"
                 :color="color"
-                :has-child="hasChildInContext(nodeInfo.id.get(), contextId)"
+                :has-child="hasChildInContext(nodeInfo.id, contextId)"
                 :name="name"
                 :show-hide-bim-object="showHideBimObject"
                 :opened="opened"
@@ -42,14 +42,14 @@
         <node-item
                 class="node-item"
                 v-if="opened"
-                v-for="(child) in nodeInfo.childrenIds.filter(onlyUnique).sort(alphabeticOrder)"
+                v-for="(child) in childrenIds"
                 :key="child"
 
 
                 :active-nodes-id="activeNodesId"
                 :context-id="contextId"
                 :nodes="nodes"
-                :node-info="nodes[child]"
+               :node-info="genNodeRef(nodes[child])"
 
                 :has-child-in-context="hasChildInContext"
                 :show-hide-object="showHideBimObject"
@@ -66,6 +66,7 @@
 
 <script>
   import NodeHeader from "./NodeHeader.vue";
+  import genNodeRef from "./genNodeRef";
 
   export default {
     name: "NodeItem",
@@ -113,15 +114,15 @@
     computed: {
 
       isActive: function () {
-        return this.activeNodesId.includes( this.nodeInfo.id.get() )
+        return this.activeNodesId.includes( this.nodeInfo.id )
       },
       isContext: function () {
-        return this.nodeInfo.id.get() === this.contextId;
+        return this.nodeInfo.id === this.contextId;
       },
       name: function () {
         if (this.nodeInfo.hasOwnProperty( 'name' ) &&
           typeof this.nodeInfo.name !== "undefined")
-          return this.nodeInfo.name.get();
+          return this.nodeInfo.name;
         return 'Uknown Name';
       },
       color: function () {
@@ -130,7 +131,7 @@
           (typeof this.nodeInfo !== "undefined")
           && (this.nodeInfo.hasOwnProperty( 'color' ))
         )
-          return this.nodeInfo.color.get();
+          return this.nodeInfo.color;
       },
       isInContext: function () {
         if (
@@ -138,38 +139,46 @@
           && (this.nodeInfo.hasOwnProperty( 'contextIds' ))
         ) {
           return this.nodeInfo.contextIds.has( this.contextId ) ||
-            this.contextId === this.nodeInfo.id.get();
+            this.contextId === this.nodeInfo.id;
         }
 
         return false;
       },
-
+      childrenIds() {
+        return this.nodeInfo.childrenIds.filter(onlyUnique);
+      }
     },
 
     methods: {
+      genNodeRef,
       onlyUnique: function ( value, index, self ) {
         return self.indexOf( value ) === index;
-      },
-      alphabeticOrder: function(a, b){
-        return (a<b?-1:(a>b?1:0));
       },
       onHideBimObject: function ( event ) {
         if (this.showHideBimObject) {
           if (typeof event === "undefined")
-            event = this.nodeInfo.id.get();
+            event = this.nodeInfo.id;
           this.emit( 'hide-bim-object', event );
         }
       },
 
       onToggleDisplayChildren: function () {
-        this.opened = !this.opened;
+        // TO DO 
+        // - peu etre mettre un state "loading" ici ou dans le NodeHeader
+        // - test si on a pas deja pull les children ?
+        this.$store
+          .dispatch("pullChildren", this.nodeInfo.id)
+          .then(() => {
+            this.opened = !this.opened;
+          })
+          .catch(e => console.error(e));
       },
 
       onHeaderClick: function () {
 
         const event = {};
         event['contextId'] = this.contextId;
-        event['nodeId'] = this.nodeInfo.id.get();
+        event['nodeId'] = this.nodeInfo.id;
         this.$emit( 'click', event )
 
       },
@@ -178,7 +187,7 @@
 
         const event = {};
         event['contextId'] = this.contextId;
-        event['nodeId'] = this.nodeInfo.id.get();
+        event['nodeId'] = this.nodeInfo.id;
         this.$emit( 'right-click', event )
 
       }
