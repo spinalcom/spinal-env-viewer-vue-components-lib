@@ -66,7 +66,7 @@
 
 <script>
   import NodeHeader from "./NodeHeader.vue";
-  import genNodeRef from "./genNodeRef";
+  import genNodeRef from "./genNodeRef.js";
 
   export default {
     name: "NodeItem",
