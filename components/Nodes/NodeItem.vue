@@ -23,8 +23,7 @@
   -->
 
 <template>
-    <div v-if="isInContext">
-
+    <div v-if="isInContext" v-tooltip="name">
         <node-header
                 :class="{active: isActive, context: isContext}"
                 :color="color"
