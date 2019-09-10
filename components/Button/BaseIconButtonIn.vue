@@ -2,8 +2,10 @@
     <md-button
             class="md-icon-button"
             @click="$emit('click')"
-            v-tooltip="{content: toolTip, container:'body',
-            placement:'end', autoHide:false}"
+            v-tooltip="{content: toolTip,
+            placement:'bottom',
+             autoHide:false,
+            }"
 
     >
         <md-icon :style="{width: width, color: fontColor}">
