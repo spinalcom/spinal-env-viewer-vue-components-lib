@@ -23,7 +23,7 @@
   -->
 
 <template>
-    <div v-if="isInContext" v-tooltip="name" >
+    <div v-if="isInContext"  >
         <node-header
                 :class="{active: isActive, context: isContext}"
                 :color="color"
@@ -31,7 +31,7 @@
                 :name="name"
                 :show-hide-bim-object="showHideBimObject"
                 :opened="opened"
-
+                v-tooltip="name"
                 @click="onHeaderClick"
                 @hide-bim-object="onHideBimObject"
                 @right-click="onHeaderRightClick"
