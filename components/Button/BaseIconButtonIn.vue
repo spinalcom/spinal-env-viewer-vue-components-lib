@@ -2,7 +2,9 @@
     <md-button
             class="md-icon-button"
             @click="$emit('click')"
-            v-tooltip="toolTip"
+            v-tooltip="{content: toolTip, container:'body',
+            placement:'end', autoHide:false}"
+
     >
         <md-icon :style="{width: width, color: fontColor}">
             {{icon}}
@@ -65,6 +67,6 @@
     }
 </script>
 
-<style scoped>
-
+<style >
+    
 </style>

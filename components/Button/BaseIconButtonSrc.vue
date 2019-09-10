@@ -1,8 +1,8 @@
 <template>
     <md-button class="md-icon-button"
                @click="$emit('click')"
-               v-tooltip="toolTip"
-    >
+               v-tooltip="{content: toolTip, container:'body',
+            placement:'end', autoHide:false}"    >
 
         <md-icon :md-src="icon" :style="{width: width, color: fontColor}"/>
     </md-button>
