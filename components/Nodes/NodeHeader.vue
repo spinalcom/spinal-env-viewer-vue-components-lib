@@ -1,6 +1,6 @@
 <template>
     <div class="node-header"
-         @click.right="$emit('right-click')"
+         @click="$emit('click')"
     >
 
         <drop-up-down-button
@@ -9,19 +9,11 @@
                 @click="$emit('toggle-display-child')"
                 :style="{visibility: isDropDownVisible}"/>
 
-        <div @click.left="$emit('click')">
+        <div  class="node-body">
             <div class="node-name">
                 {{name}}
             </div>
 
-            <i class="material-icons node-hide-bim"
-               :style="{'font-size': '18px', 'opacity': '0.7'}"
-               @click="$emit('hide-bim-object')"
-               v-if="showHideBimObject"
-               v-tooltip="'show bim object'"
-            >
-                visibility
-            </i>
 
             <color-maker
                     class="node-color"
@@ -91,6 +83,7 @@
         width: 100%;
         height: 36px;
         padding: 9px 6px 6px 13px;
+
     }
 
     .node-header:hover {
@@ -105,6 +98,7 @@
         width: 21px;
         user-select: none;
         -moz-user-select: none;
+
     }
 
     .node-name {
@@ -116,16 +110,9 @@
         width: calc(100% - 77px);
     }
 
-    .node-hide-bim {
-        position: absolute;
-        right: 15px;
-        top: 6px;
-    }
 
     .node-color {
         position: absolute;
         right: 0;
     }
-
-
 </style>
