@@ -31,7 +31,7 @@
                    :active-nodes-id="activeNodesId"
                    :context-id="id"
                    :nodes="nodes"
-                   :node-info="genNodeRef(nodes[id])"
+                   :node-info="genNodeRef(nodes, id)"
 
                    :show-hide-bim-object="showHideBimObject"
                    :has-child-in-context="hasChildInContext"
