@@ -37,24 +37,22 @@ with this file. If not, see
       @right-click="onHeaderRightClick"
       @toggle-display-child="onToggleDisplayChildren"
     />
-    <template
-      v-if="opened"
-      v-for="child in childrenIds.filter(onlyUnique)"
-      :key="child"
-    >
-      <node-item
-        v-if="isNodeExistInStore(nodes, child)"
-        class="node-item"
-        :active-nodes-id="activeNodesId"
-        :context-id="contextId"
-        :nodes="nodes"
-        :node-info="genNodeRef(nodes, child)"
-        :has-child-in-context="hasChildInContext"
-        :show-hide-object="showHideBimObject"
-        @click="$emit('click', $event)"
-        @hide-bim-object="$emit('hide-bim-object', $event)"
-        @right-click="$emit('click-right', $event)"
-      />
+    <template v-if="opened">
+      <template v-for="child in childrenIdsCompu" :key="child">
+        <node-item
+          v-if="isNodeExistInStore(nodes, child)"
+          class="node-item"
+          :active-nodes-id="activeNodesId"
+          :context-id="contextId"
+          :nodes="nodes"
+          :node-info="genNodeRef(nodes, child)"
+          :has-child-in-context="hasChildInContext"
+          :show-hide-object="showHideBimObject"
+          @click="$emit('click', $event)"
+          @hide-bim-object="$emit('hide-bim-object', $event)"
+          @right-click="$emit('click-right', $event)"
+        />
+      </template>
     </template>
   </div>
 </template>
@@ -71,6 +69,7 @@ export default {
   data: function () {
     return {
       opened: false,
+      childrenIds: [],
     };
   },
 
@@ -141,8 +140,8 @@ export default {
 
       return false;
     },
-    childrenIds() {
-      return this.nodeInfo.childrenIds.filter(this.onlyUnique);
+    childrenIdsCompu() {
+      return this.childrenIds.filter(this.onlyUnique);
     },
   },
 
@@ -150,7 +149,7 @@ export default {
     genNodeRef,
     isNodeExistInStore: function (nodes, id) {
       const exists = nodes.hasOwnProperty(id);
-      if (!exists) console.error(`NodeItem: node id ${id} not found in store`);
+      if (!exists) console.warn(`NodeItem: node id ${id} not found in store`);
       return exists;
     },
     onlyUnique: function (value, index, self) {
@@ -172,8 +171,9 @@ export default {
           contextId: this.contextId,
           id: this.nodeInfo.id,
         })
-        .then(() => {
+        .then((data) => {
           this.opened = !this.opened;
+          this.childrenIds = data.map((child) => child.id.get());
         })
         .catch((e) => console.error(e));
     },
